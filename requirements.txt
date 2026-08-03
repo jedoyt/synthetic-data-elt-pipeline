@@ -1,0 +1,4 @@
+faker
+requests
+sqlite3
+pytest
