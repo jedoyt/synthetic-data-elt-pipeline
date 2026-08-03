@@ -1,0 +1,341 @@
+# Synthetic E-Commerce Analytics ELT Pipeline
+
+## Overview
+
+This project is a portfolio-focused Data Engineering project that simulates a real-world e-commerce analytics platform using synthetic data.
+
+The system generates customer activity events through a Python-based Event-Producing Operational System, exposes those events through a pseudo REST API, and processes them using an ELT (Extract, Load, Transform) architecture built with Python, SQLite, and SQL.
+
+The project emphasizes learning foundational Data Engineering concepts without relying on cloud platforms or enterprise tooling.
+
+The ultimate goal is to build a complete analytics platform capable of transforming raw user activity data into business insights.
+
+---
+
+## Learning Objectives
+
+This project was created to develop practical experience in:
+
+- ELT architecture
+- Medallion Architecture (Bronze, Silver, Gold)
+- SQL-based data transformations
+- Event-driven data modeling
+- Session analytics
+- Incremental loading
+- Data quality validation
+- Pipeline orchestration
+- Dimensional modeling
+- Analytics engineering fundamentals
+
+---
+
+## Project Scope
+
+The project simulates an e-commerce platform where customers interact with products through application sessions.
+
+Example customer journey:
+
+```text
+app_open
+      ↓
+product_view
+      ↓
+product_view
+      ↓
+cart_action
+      ↓
+purchase
+      ↓
+app_close
+```
+
+These events become the source data for the analytics platform.
+
+---
+
+## Architecture
+
+```text
+Event-Producing Operational System
+                │
+                ▼
+        Pseudo REST API
+                │
+                ▼
+          Extract Layer
+            (Python)
+                │
+                ▼
+          Bronze Layer
+        (Raw JSONL Events)
+                │
+                ▼
+          Raw SQLite
+                │
+                ▼
+          Silver Layer
+      (SQL Transformations)
+                │
+                ▼
+           Gold Layer
+       (Analytics Marts)
+                │
+                ▼
+        Business Insights
+```
+
+---
+
+## Medallion Architecture
+
+### Bronze Layer
+
+Purpose:
+
+Store raw events exactly as received.
+
+Characteristics:
+
+- Immutable
+- Append-only
+- Session-based
+- Event-driven
+- JSONL storage
+
+Example:
+
+```json
+{
+  "event_type": "product_view",
+  "session_id": "S123",
+  "customer_id": "C456",
+  "product_id": "P789"
+}
+```
+
+---
+
+### Silver Layer
+
+Purpose:
+
+Transform raw events into clean business entities.
+
+Examples:
+
+- Sessions
+- Customers
+- Orders
+- Products
+- Payments
+- Shipments
+
+Operations include:
+
+- Deduplication
+- Type casting
+- Standardization
+- Referential integrity validation
+
+---
+
+### Gold Layer
+
+Purpose:
+
+Provide analytics-ready datasets.
+
+Examples:
+
+- Daily Revenue
+- Customer Lifetime Value
+- Product Performance
+- Conversion Funnel
+- Cart Abandonment Analysis
+- Session Analytics
+
+---
+
+## Technology Stack
+
+### Programming
+
+- Python 3.x
+
+### Database
+
+- SQLite
+
+### Data Formats
+
+- JSON
+- JSONL
+
+### Data Generation
+
+- Faker
+- Mockaroo (optional)
+
+### Testing
+
+- Pytest
+
+### Version Control
+
+- Git
+
+---
+
+## Repository Structure
+
+```text
+synthetic-ecommerce-analytics/
+
+├── README.md
+
+├── configs/
+│
+├── data/
+│   ├── bronze/
+│   ├── warehouse/
+│   └── exports/
+│
+├── docs/
+│   ├── architecture/
+│   ├── diagrams/
+│   └── data_dictionary/
+│
+├── logs/
+│
+├── src/
+│   ├── generators/
+│   ├── api/
+│   ├── extract/
+│   ├── load/
+│   ├── transform/
+│   ├── quality/
+│   ├── metadata/
+│   └── orchestrator/
+│
+├── sql/
+│   ├── raw/
+│   ├── silver/
+│   └── gold/
+│
+├── tests/
+│
+└── requirements.txt
+```
+
+---
+
+## Business Questions
+
+The completed platform should answer questions such as:
+
+### Revenue & Sales
+
+- What is the daily revenue trend?
+- What is the average order value?
+- Which products generate the most revenue?
+
+### Customer Analytics
+
+- Who are the highest-value customers?
+- Which customers are repeat buyers?
+- What is customer lifetime value?
+
+### Product Analytics
+
+- Which products are viewed most frequently?
+- Which products convert best?
+- Which categories drive the most revenue?
+
+### Customer Journey Analytics
+
+- What percentage of sessions result in purchases?
+- Where do users drop off in the conversion funnel?
+- Which products are commonly abandoned in carts?
+
+### Operational Analytics
+
+- What percentage of orders are delivered on time?
+- Which payment methods are most frequently used?
+
+---
+
+## Current Status
+
+### Phase
+
+✅ Sprint 0 - Project Foundation
+
+### Completed
+
+- Repository initialization
+- Project folder structure
+- Git configuration
+- Requirements file
+- SQLite database creation
+
+### Upcoming
+
+- Event-Producing Operational System
+- Synthetic event generation
+- Pseudo REST API
+- Bronze Layer ingestion
+- SQLite warehouse loading
+- Silver transformations
+- Gold analytics marts
+
+---
+
+## Guiding Principles
+
+This project intentionally prioritizes learning fundamentals over using advanced tools.
+
+Instead of immediately using technologies such as:
+
+- Airflow
+- Spark
+- Databricks
+- Snowflake
+- dbt
+- Kafka
+
+the project focuses on understanding the core ideas through:
+
+- Python
+- SQL
+- SQLite
+- JSONL
+- Custom orchestration
+
+Once those fundamentals are understood, the architecture can be extended to enterprise-grade tools more naturally.
+
+---
+
+## Future Enhancements
+
+Potential future expansions include:
+
+- Custom orchestration framework
+- CDC simulation
+- Event streaming simulation
+- Parquet storage
+- Slowly Changing Dimensions (Type 2)
+- Kafka simulation
+- Dockerization
+- dbt migration
+- Cloud deployment
+- Dashboard integration
+
+---
+
+## Author
+
+Jed Uñalivia
+
+Data Engineering Portfolio Project
+
+Synthetic E-Commerce Analytics ELT Pipeline
