@@ -7,6 +7,4 @@ with open('products.json') as f:
         PRODUCTS = json.load(f)
 
 def generate_product():
-    
-    product = random.choice(PRODUCTS)
-    return product
+    return random.choice(PRODUCTS)

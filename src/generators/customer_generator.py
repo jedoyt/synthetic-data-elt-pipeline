@@ -7,5 +7,4 @@ with open('customers.json') as f:
         CUSTOMERS = json.load(f)
 
 def generate_customer():
-    customer = random.choice(CUSTOMERS)
-    return customer
+    return random.choice(CUSTOMERS)
