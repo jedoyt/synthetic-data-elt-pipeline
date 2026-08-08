@@ -3,8 +3,9 @@ import json
 import random
 
 
+with open('customers.json') as f:
+        CUSTOMERS = json.load(f)
+
 def generate_customer():
-    with open('customers.json') as f:
-        customers = json.load(f)
-    customer = random.choice(customers)
+    customer = random.choice(CUSTOMERS)
     return customer

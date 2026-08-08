@@ -3,8 +3,10 @@ import json
 import random
 
 
+with open('products.json') as f:
+        PRODUCTS = json.load(f)
+
 def generate_product():
-    with open('products.json') as f:
-        products = json.load(f)
-    product = random.choice(products)
+    
+    product = random.choice(PRODUCTS)
     return product
