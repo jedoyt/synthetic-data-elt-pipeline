@@ -2,9 +2,17 @@
 import json
 import random
 
-
-with open('customers.json') as f:
+with open('./src/generators/customers.json') as f:
         CUSTOMERS = json.load(f)
 
-def generate_customer():
+def get_random_customer():
+    """
+    Returns a dictionary representing a randomly chosen customer.
+    return: A dictionary containing the customer data.
+    """
     return random.choice(CUSTOMERS)
+
+
+# Test customer_generator.py
+# if __name__ == "__main__":
+#     print(get_random_customer())

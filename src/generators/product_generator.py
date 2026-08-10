@@ -2,9 +2,16 @@
 import json
 import random
 
-
-with open('products.json') as f:
+with open('./src/generators/products.json') as f:
         PRODUCTS = json.load(f)
 
-def generate_product():
+def get_random_product():
+    """
+    Returns a dictionary representing a randomly chosen product.
+    return: A dictionary containing the product data.
+    """
     return random.choice(PRODUCTS)
+
+# Test the function
+# if __name__ == "__main__":
+#     print(get_random_product())
