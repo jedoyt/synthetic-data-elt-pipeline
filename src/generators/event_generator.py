@@ -111,8 +111,12 @@ def generate_app_close_event(prev_event_ts):
 
 # Test event_generator.py
 # if __name__ == "__main__":
-    # from datetime import datetime
-    # from pprint import pprint
+#     from datetime import datetime
+#     from pprint import pprint
+
+    # Test generate_app_open_event and app_close_event
+    # pprint(generate_app_open_event(fake.date_time_this_year()))
+    # pprint(generate_app_close_event(fake.date_time_this_year()))
 
     # from product_generator import get_random_product
 
