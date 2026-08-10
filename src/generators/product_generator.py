@@ -9,7 +9,7 @@ PRODUCTS_FILE = BASED_DIR / 'products.json'
 with open(PRODUCTS_FILE) as f:
         PRODUCTS = json.load(f)
 
-def get_random_product():
+def get_random_product() -> dict:
     """
     Returns a dictionary representing a randomly chosen product.
     return: A dictionary containing the product data.

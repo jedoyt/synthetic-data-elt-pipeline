@@ -9,7 +9,7 @@ CUSTOMER_FILE = BASED_DIR / 'customers.json'
 with open(CUSTOMER_FILE) as f:
         CUSTOMERS = json.load(f)
 
-def get_random_customer():
+def get_random_customer() -> dict:
     """
     Returns a dictionary representing a randomly chosen customer.
     return: A dictionary containing the customer data.
