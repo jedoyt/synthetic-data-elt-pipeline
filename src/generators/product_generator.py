@@ -1,8 +1,12 @@
 # Product generator that randomly chooses a product from products.json and returns a dictionary of the product data
 import json
 import random
+from pathlib import Path
 
-with open('./src/generators/products.json') as f:
+BASED_DIR = Path(__file__).parent
+PRODUCTS_FILE = BASED_DIR / 'products.json'
+
+with open(PRODUCTS_FILE) as f:
         PRODUCTS = json.load(f)
 
 def get_random_product():

@@ -134,4 +134,4 @@ def generate_app_close_event(prev_event_ts):
     # pprint(products)
     # print("\nCart items:")
     # cart_items = [ generate_cart_action_event(fake.date_time_this_year(), product, "add", 2) for product in products ]
-    # pprint(generate_purchase_event(datetime.now(), cart_items))  # noqa: DTZ005
+    # pprint(generate_purchase_event(datetime.now(), cart_items))

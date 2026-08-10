@@ -1,8 +1,12 @@
 # Customer Generator that randomly chooses a customer from customers.json and returns a dictionary of the customer data
 import json
 import random
+from pathlib import Path
 
-with open('./src/generators/customers.json') as f:
+BASED_DIR = Path(__file__).parent
+CUSTOMER_FILE = BASED_DIR / 'customers.json'
+
+with open(CUSTOMER_FILE) as f:
         CUSTOMERS = json.load(f)
 
 def get_random_customer():
