@@ -374,15 +374,15 @@ def generate_session() -> dict:
     roll = random.random()
 
     if roll < 0.70:
-        print("Chosen browse only session.")
+        # print("Chosen browse only session.")
         session_dict["events"].extend(_generate_browse_session(starting_ts, viewed_products))
 
     elif roll < 0.90:
-        print("Chosen abandonded cart session.")
+        # print("Chosen abandonded cart session.")
         session_dict["events"].extend(_generate_abandoned_cart_session(starting_ts, viewed_products))
 
     else:
-        print("Chosen session with purchase.")
+        # print("Chosen session with purchase.")
         session_dict["events"].extend(_generate_purchase_session(starting_ts, viewed_products))
 
     return session_dict
