@@ -247,7 +247,7 @@ def _generate_purchase_session(starting_ts, viewed_products):
         assert potential_checkout_items != []
     except AssertionError as e:
         print(f"AssersionError: {e}")
-        raise e
+        raise
 
     # Randomly choose a carted item to surely be purchased
     chosen_index_for_checkout = random.choice([potential_checkout_items.index(item) for item in potential_checkout_items])
@@ -308,14 +308,14 @@ def _generate_purchase_session(starting_ts, viewed_products):
         print(f"item = {item}")
         if event:
             print(f"event = {event}")
-        raise e
+        raise
     except KeyError as e:
         print(exception_handler_title)
         print(f"KeyError: {e}")
         print(f"item = {item}")
         if event:
             print(f"event = {event}")
-        raise e
+        raise
 
     return events
 
