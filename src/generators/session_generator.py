@@ -144,7 +144,7 @@ def _generate_purchase_session(starting_ts, viewed_products):
     """
     # Start the event at app_open
     events = [generate_app_open_event(starting_ts)]
-    # carted_items = []
+    
     prev_event_ts = starting_ts
 
     # Randomly choose a viewed product to surely be added to cart
@@ -184,36 +184,36 @@ def _generate_purchase_session(starting_ts, viewed_products):
     removed_items = [] # cart action event under "remove" state
     
     # Other possible cart actions: update or remove
-    if initial_cart_actions:
-        for i, event in enumerate(initial_cart_actions):
-            # Fetch full product dictionary of carted item
-            product = next(prod for prod in viewed_products if prod["product_id"] == event["attributes"]["product_id"])
+    for i, event in enumerate(initial_cart_actions):
+        # Fetch full product dictionary of carted item
+        product = next(prod for prod in viewed_products if prod["product_id"] == event["attributes"]["product_id"])
 
-            action = random.choice(["none", "update", "remove"])
-            if action == "none":
+        action = random.choice(["none", "update", "remove"])
+        if action == "none":
+            continue
+        if action == "update":
+            updated_qty = random.randint(2, 10)
+            event_3 = generate_cart_action_event(prev_event_ts, product, "update", updated_qty)
+            events.append(event_3)
+            prev_event_ts = datetime.fromisoformat(event_3["event_ts"])
+            # Save this cart action event on updated_qty_items
+            updated_qty_items.append(event)
+        if action == "remove":
+            chosen_cart_item = viewed_products[chosen_index_for_add_to_cart]
+            if event["attributes"]["product_id"] == chosen_cart_item["product_id"]:
+                # This cart action event is chosen to stay in the cart.
+                # This should not be removed.
                 continue
-            if action == "update":
-                updated_qty = random.randint(2, 10)
-                event_3 = generate_cart_action_event(prev_event_ts, product, "update", updated_qty)
+            else:
+                # Generate a "remove" cart action event for this product item and set quantity to 0
+                event_3 = generate_cart_action_event(prev_event_ts, product, "remove", 0)
                 events.append(event_3)
                 prev_event_ts = datetime.fromisoformat(event_3["event_ts"])
-                # Save this cart action event on updated_qty_items
-                updated_qty_items.append(event)
-            if action == "remove":
-                if i == chosen_index_for_add_to_cart:
-                    # This cart action event is chosen to stay in the cart.
-                    # This should not be removed.
-                    continue
-                else:
-                    # Generate a "remove" cart action event for this product item and set quantity to 0
-                    event_3 = generate_cart_action_event(prev_event_ts, product, "remove", 0)
-                    events.append(event_3)
-                    prev_event_ts = datetime.fromisoformat(event_3["event_ts"])
-                    # Save this cart action event on the removed_items
-                    removed_items.append(event)
+                # Save this cart action event on the removed_items
+                removed_items.append(event)
 
     # This included possible "update" and "remove" cart actions
-    all_cart_actions = [item for item in events if item["event_type"] == "cart_action"]
+    all_cart_actions = [event for event in events if event["event_type"] == "cart_action"]
 
     # Checkout/Purchase Section
     checkout_items = [] # The final list of checkout items
@@ -221,6 +221,10 @@ def _generate_purchase_session(starting_ts, viewed_products):
 
     # Gather potential checkout items
     for item in all_cart_actions:
+        # chosen_cart_item = viewed_products[chosen_index_for_add_to_cart]
+        # if item["product_id"] == chosen_cart_item["product_id"]:
+        #     # Item is automatically a potential checkout item
+        #     potential_checkout_items.append(item)
         if item["attributes"]["action"] == "update":
             if item in removed_items:
                 # Item was removed from cart. Not a potential checkout item
@@ -239,6 +243,12 @@ def _generate_purchase_session(starting_ts, viewed_products):
                 # nor was it removed from cart
                 potential_checkout_items.append(item)
 
+    try:
+        assert potential_checkout_items != []
+    except AssertionError as e:
+        print(f"AssersionError: {e}")
+        raise e
+
     # Randomly choose a carted item to surely be purchased
     chosen_index_for_checkout = random.choice([potential_checkout_items.index(item) for item in potential_checkout_items])
 
@@ -251,13 +261,61 @@ def _generate_purchase_session(starting_ts, viewed_products):
             checkout_items.append(item)
 
     # Purchase transaction
-    if checkout_items:
-        event_4 = generate_purchase_event(prev_event_ts, checkout_items)
-        events.append(event_4)
-        prev_event_ts = datetime.fromisoformat(event_4["event_ts"])
+    event_4 = generate_purchase_event(prev_event_ts, checkout_items)
+    events.append(event_4)
+    prev_event_ts = datetime.fromisoformat(event_4["event_ts"])
 
     # Append app_close event
     events.append(generate_app_close_event(prev_event_ts))
+
+    # Final checks
+    try:
+        # Assert no duplicate product items inside checkout_items
+        exception_handler_title = "Duplicate product item checker:"
+        product_ids = [item["attributes"]["product_id"] for item in checkout_items]
+        assert len(product_ids) == len(set(product_ids))
+    
+        # Assert all quantities are greater that 0 inside checkout_items
+        exception_handler_title = "Greater that 0 quantity checker:"
+        assert all(item["attributes"]["quantity"] > 0 for item in checkout_items)
+    
+        # Assert at least one item is on checkout_items
+        exception_handler_title = "At least one checkout checker:"
+        assert len(checkout_items) >= 1
+
+        # Assert subtotals are correct
+        exception_handler_title = "Subtotals checker:"
+        event_checkout = []
+        for event in events:
+            if event["event_type"] == "purchase":
+                event_checkout.extend(event["attributes"]["checkout_items"])
+                break
+
+        for item in checkout_items:
+            for event_checkout_item in event_checkout:
+                if event_checkout_item["product_id"] == item["attributes"]["product_id"]:
+                    assert event_checkout_item["sub_total"] == round(item["attributes"]["price"] * item["attributes"]["quantity"], 2)
+
+        # Assert total amount is correct
+        exception_handler_title = "Total amount checker:"
+        shipping_fee = next(event["attributes"]["shipping_fee"] for event in events if event["event_type"] == "purchase")
+        total_amount = next(event["attributes"]["total_amount"] for event in events if event["event_type"] == "purchase")
+        expected_total = round(sum(item["attributes"]["price"] * item["attributes"]["quantity"] for item in checkout_items) + shipping_fee, 2)
+        assert total_amount == expected_total
+    except AssertionError as e:
+        print(exception_handler_title)
+        print(f"AssertionError: {e}")
+        print(f"item = {item}")
+        if event:
+            print(f"event = {event}")
+        raise e
+    except KeyError as e:
+        print(exception_handler_title)
+        print(f"KeyError: {e}")
+        print(f"item = {item}")
+        if event:
+            print(f"event = {event}")
+        raise e
 
     return events
 
