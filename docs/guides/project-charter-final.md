@@ -152,315 +152,316 @@ Example:
 SELECT
     customer_id,
     COUNT(*) AS total_orders
-FROM silver_orde*s
+FROM silver_orders
 GROUP BY customer_id;
 ```
 
 ---
 
-*# Analytics Outputs
+## Analytics Outputs
 
-Gold marts wi*l support:
+Gold marts will support:
 
 - Revenue Analysis
-- C*stomer Lifetime Value
-- Customer C*nversion Analysis
-- Product Perfor*ance Analysis
+- Customer Lifetime Value
+- Customer Conversion Analysis
+- Product Performance Analysis
 - Session Analytics
-* Cart Abandonment Analysis
-- Order*Fulfillment Analysis
-- Payment Met*od Analysis
+- Cart Abandonment Analysis
+- Order Fulfillment Analysis
+- Payment Method Analysis
 
 ---
 
 # Out of Scope
 
-*he following technologies are inte*tionally excluded from the initial*implementation:
+The following technologies are intentionally excluded from the initial implementation:
 
-- Cloud Platforms*- Airflow
+- Cloud Platforms-- Airflow
 - Docker
 - Kubernetes
-- *afka
+- Kafka
 - Spark
 - Snowflake
-- Databri*ks
+- Databricks
 - dbt
 - Machine Learning
 
-Some *mplementation patterns may resembl* these technologies for learning p*rposes.
+Some implementation patterns may resemble these technologies for learning purposes.
 
-These technologies may be*explored in future project phases.*
+These technologies may be explored in future project phases.
 ---
 
 # Stakeholders
 
-## Primary S*akeholder
+## Primary Stakeholder
 
-Data Engineering Learne*
+Data Engineering Learner
 
 Purpose:
 
 - Skill development
-- *ortfolio development
+- Portfolio development
 
-## Secondary*Stakeholder
+## Secondary Stakeholder
 
 Analytics Consumers
 
-*onsumes:
+Consumes:
 
 - Revenue metrics
-- Cust*mer metrics
+- Customer metrics
 - Product metrics
-- Be*avioral analytics
-- Operational an*lytics
+- Behavioral analytics
+- Operational analytics
 
 ---
 
 # Data Sources
 
-## So*rce Type
+## Source Type
 
-Synthetic Event-Producin* Operational System
+Synthetic Event-Producing Operational System
 
-## Generation*Method
+## Generation Method
 
-Python service using Faker*and optional Mockaroo reference da*asets.
+Python service using Faker and optional Mockaroo reference datasets.
 
 ---
 
 ## Access Method
 
-Pse*do REST API
+Pseudo REST API
 
 Example endpoints:
 
-`*`http
+```http
 GET /sessions
 GET /events
-GE* /customers
+GET /customers
 GET /products
-GET /ord*rs
+GET /orders
 GET /payments
 GET /shipments
-``*
+```
 
 ---
 
 ## Update Frequency
 
-Contin*ous synthetic generation at config*rable intervals.
+Continuous synthetic generation at configurable intervals.
 
 Example:
 
-```tex*
+```text
 Every 10 seconds
 ```
 
 ---
 
-# Arch*tecture
+# Architecture
 
 ```text
-Event-Producing O*erational System
-                │*                ▼
-        Pseudo R*ST API
+Event-Producing Operational System
                 │
-         *      ▼
+        Pseudo REST API
+                │
+                ▼
          Extract Layer
-   *        (Python)
-                │*                ▼
-          Bronze*Layer
+            (Python)
+                │
+          Bronze Layer
         (Raw JSONL Events)
- *              │
-                ▼
-*         Raw SQLite
-              * │
-                ▼
-          Sil*er Layer
-      (SQL Transformation*)
                 │
-              * ▼
+                ▼
+            Raw SQLite
+                │
+                ▼
+          Silver Layer
+      (SQL Transformations)
+                │
+                ▼
            Gold Layer
-       (A*alytics Marts)
+       (Analytics Marts)
                 │
- *              ▼
-        Business I*sights
+                ▼
+        Business Insights
 ```
 
 ---
 
-# Medallion Archi*ecture
+# Medallion Architecture
 
 ## Bronze Layer
 
-### Purpo*e
+### Purpose
 
-Store source data exactly as re*eived.
+Store source data exactly as received.
 
 ### Characteristics
 
-- Imm*table
+- Immutable
 - Append-only
 - Event-based
-* Session-oriented
+- Session-oriented
 - Raw JSONL
 
-###*Example Files
+### Example Files
 
 ```text
-events_sess*ons_2026-08-03T10-00-00Z.jsonl
-eve*ts_sessions_2026-08-03T10-10-00Z.j*onl
-events_sessions_2026-08-03T10-*0-00Z.jsonl
+events_sessions_2026-08-03T10-00-00Z.jsonl
+events_sessions_2026-08-03T10-10-00Z.jsonl
+events_sessions_2026-08-03T10-20-00Z.jsonl
 ```
 
-### Session Struc*ure
+### Session Structure
 
 Each session may contain:
 
-- *ession_id
+- session_id
 - customer_id
-- location*- device information
-- event times*amps
+- location-- device information
+- event timestamps
 - customer actions
 
-### Suppo*ted Events
+### Supported Events
 
 - app_open
-- product_v*ew
+- product_view
 - cart_action
 - payment
-- purch*se
+- purchsse
 - shipment_update
-- delivery_co*firmation
+- delivery_confirmation
 - app_close
 
-No transfor*ations are performed in Bronze.
+No transformations are performed in Bronze.
 
--*-
+---
 
 ## Silver Layer
 
 ### Purpose
 
-C*nvert raw event data into clean bu*iness entities and standardized ev*nt models.
+Convert raw event data into clean business entities and standardized event models.
 
 ### Operations
 
-- Dedu*lication
+- Deduplication
 - Data type casting
-- Nul* handling
+- Null handling
 - Standardization
-- Refe*ential integrity validation
-- Even* normalization
-- Session reconstru*tion
+- Referential integrity validation
+- Event normalization
+- Session reconstruction
 
 ### Example Tables
 
 ```text
-*ilver_sessions
+silver_sessions
 silver_events
-silve*_customers
+silver_customers
 silver_products
-silver_*rders
+silver_orders
 silver_payments
-silver_shipm*nts
+silver_shipments
 ```
 
-Silver represents the ope*ational business view.
+Silver represents the operational business view.
 
 ---
 
-## Go*d Layer
+## Gold Layer
 
 ### Purpose
 
-Provide anal*tics-ready models designed to answ*r business questions.
+Provide analytics-ready models designed to answer business questions.
 
-### Dimensi*nal Models
+### Dimensional Models
 
 ```text
 fact_orders
-fa*t_sessions
+fact_sessions
 fact_payments
 
-dim_cust*mer
+dim_customer
 dim_product
 dim_location
-dim_d*te
+dim_date
 ```
 
 ### Analytics Marts
 
-```te*t
+```text
 gold_daily_revenue
-gold_customer*ltv
+gold_customer_ltv
 gold_repeat_customers
-gold_pro*uct_performance
-gold_conversion_fu*nel
+gold_product_performance
+gold_conversion_funnel
 gold_cart_abandonment
-gold_ses*ion_metrics
-gold_order_fulfillment*```
+gold_session_metrics
+gold_order_fulfillment
+```
 
-Gold represents the analytica* business view.
+Gold represents the analytical business view.
 
 ---
 
-# ELT Strate*y
+# ELT Strategy
 
 ## Extract
 
-Retrieve data from *seudo API endpoints.
+Retrieve data from pseudo API endpoints.
 
 ---
 
-## Load*
+## Loads
 Store records into:
 
-- Bronze JSO*L files
+- Bronze JSONL files
 - Raw SQLite tables
 
-witho*t modification.
+without modification.
 
 ---
 
-## Transform*
-Execute SQL scripts against SQLit*.
+## Transforms
+Execute SQL scripts against SQLite.
 
 ```text
 sql/
 ├── raw/
-├── silve*/
+├── silver/
 ├── gold/
 ```
 
-All transformatio*s occur after data loading.
+All transformations occur after data loading.
 
-This *roject follows a true ELT architec*ure.
+This project follows a true ELT architecture.
 
 ---
 
-# Data Quality Requirem*nts
+# Data Quality Requirements
 
 ## Completeness
 
-Required fie*ds include:
+Required fields include:
 
 - session_id
-- custom*r_id
+- customer_id
 - event_ts
 - event_type
 
 ---
-*## Uniqueness
+### Uniqueness
 
-Unique identifiers *nclude:
+Unique identifiers include:
 
 - session_id
-- customer_i*
+- customer_id
 - order_id
 - payment_id
-- shipmen*_id
+- shipment_id
 
 ---
 
@@ -468,96 +469,96 @@ Unique identifiers *nclude:
 
 Examples:
 
-*``sql
+```sql
 quantity > 0
 amount >= 0
-eve*t_ts IS NOT NULL
-event_type IS NOT*NULL
+event_ts IS NOT NULL
+event_type IS NOT NULL
 ```
 
 ---
 
-## Referential Inte*rity
+## Referential Integrity
 
 Examples:
 
 ```text
-order.cus*omer_id
+order.customer_id
 must exist in
-customer.cus*omer_id
+customer.customer_id
 ```
 
 ```text
-event.session*id
+event.session_id
 must exist in
-session.session_i*
+session.session_id
 ```
 
 ---
 
-# Incremental Loading S*rategy
+# Incremental Loading Strategy
 
 ## Approach
 
-Watermark-bas*d loading.
+Watermark-based loading.
 
 ### Tracked Fields
 
-``*text
+```text
 created_at
 updated_at
-event_t*
+event_ts
 ```
 
 ### Metadata Table
 
 ```text
-*ipeline_metadata
+pipeline_metadata
 ```
 
 Stores:
 
-- P*evious execution time
-- Latest pro*essed timestamp
-- Execution status*- Rows extracted
+- Previous execution time
+- Latest processed timestamp
+- Execution status-- Rows extracted
 - Rows loaded
-- R*ws transformed
+- Rows transformed
 
 ---
 
-# Business Qu*stions
+# Business Questions
 
-The Gold layer should answ*r the following questions:
+The Gold layer should answer the following questions:
 
-### Re*enue & Sales
+### Revenue & Sales
 
-- What is the daily *evenue trend?
-- What is the averag* order value?
-- Which products gen*rate the most revenue?
+- What is the daily revenue trend?
+- What is the average order value?
+- Which products generate the most revenue?
 
-### Custom*r Analytics
+### Customer Analytics
 
-- Who are the highest*value customers?
-- Which customers*are repeat buyers?
-- What is the c*stomer lifetime value?
+- Who are the highest value customers?
+- Which customers are repeat buyers?
+- What is the customer lifetime value?
 
-### Produc* Analytics
+### Product Analytics
 
-- Which products are m*st viewed?
-- Which products are mo*t purchased?
-- Which product categ*ries drive the most sales?
+- Which products are most viewed?
+- Which products are most purchased?
+- Which product categories drive the most sales?
 
-### Cu*tomer Journey Analytics
+### Customer Journey Analytics
 
-- How man* sessions result in purchases?
-- W*at is the purchase conversion rate*
-- Where do customers drop off in *he funnel?
-- Which products are fr*quently abandoned in carts?
+- How many sessions result in purchases?
+- What is the purchase conversion rates
+- Where do customers drop off in the funnel?
+- Which products are frequently abandoned in carts?
 
-### O*erational Analytics
+### Operational Analytics
 
-- What percen*age of orders are delivered on tim*?
-- Which payment methods are most*frequently used?
+- What percentage of orders are delivered on time?
+- Which payment methods are most frequently used?
 
 ---
 
