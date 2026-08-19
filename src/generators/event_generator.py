@@ -99,7 +99,7 @@ def generate_purchase_event(prev_event_ts, checkout_items) -> dict:
             "event_type": "purchase",
             "event_ts": (prev_event_ts + timedelta(seconds=random.randint(5, 300))).isoformat(timespec='seconds'),
             "attributes": {
-                "cart_items": []
+                "checkout_items": []
             }
         }
 
@@ -109,15 +109,15 @@ def generate_purchase_event(prev_event_ts, checkout_items) -> dict:
         item_dict["product_id"] = item["attributes"]["product_id"]
         item_dict["quantity"] = item["attributes"]["quantity"]
         item_dict["price"] = item["attributes"]["price"]
-        item_dict["sub_total"] = item["attributes"]["quantity"] * item["attributes"]["price"]
-        event["attributes"]["cart_items"].append(item_dict)
+        item_dict["sub_total"] = round(item["attributes"]["quantity"] * item["attributes"]["price"], 2)
+        event["attributes"]["checkout_items"].append(item_dict)
 
     # Add the payment_method, shipping_fee, and total_amount to the event attributes
     event["attributes"]["order_id"] = fake.bothify('ORD-##-#####-#####').upper()
     event["attributes"]["payment_method"] = payment_method
     event["attributes"]["shipping_fee"] = round(random.uniform(5, 50), 2)
-    total_cart_value = sum([item["price"] * item["quantity"] for item in event["attributes"]["cart_items"]])
-    event["attributes"]["total_amount"] = total_cart_value + event["attributes"]["shipping_fee"]
+    total_cart_value = sum([item["price"] * item["quantity"] for item in event["attributes"]["checkout_items"]])
+    event["attributes"]["total_amount"] = round(total_cart_value + event["attributes"]["shipping_fee"],2)
 
     return event
 
