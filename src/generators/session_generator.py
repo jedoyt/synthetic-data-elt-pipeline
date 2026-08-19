@@ -388,8 +388,8 @@ def generate_session() -> dict:
     return session_dict
 
 # Test section
-if __name__ == "__main__":
-    from pprint import pprint
-    # Generate a session and print the result
-    session = generate_session()
-    pprint(session)
+# if __name__ == "__main__":
+#     from pprint import pprint
+#     # Generate a session and print the result
+#     session = generate_session()
+#     pprint(session)
