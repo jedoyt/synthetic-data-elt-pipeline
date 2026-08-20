@@ -268,7 +268,7 @@ def _generate_purchase_session(starting_ts, viewed_products):
     # Append app_close event
     events.append(generate_app_close_event(prev_event_ts))
 
-    # Final checks
+    # Final checks on session object before return
     try:
         # Assert no duplicate product items inside checkout_items
         exception_handler_title = "Duplicate product item checker:"
@@ -387,9 +387,79 @@ def generate_session() -> dict:
 
     return session_dict
 
-# Test section
-# if __name__ == "__main__":
-#     from pprint import pprint
-#     # Generate a session and print the result
-#     session = generate_session()
-#     pprint(session)
+# TEST FUNCTIONS
+def test_session_starts_and_ends_correctly():
+        session = generate_session()
+        
+        try:
+            assert session["events"][0]["event_type"] == "app_open"
+            assert session["events"][-1]["event_type"] == "app_close"
+            print('PASSED: Session events starts with "app_open" and ends in "app_closed"')
+        except Exception as e:
+            print(f'FAILED: {e}')
+            raise
+
+def test_event_timestamps_are_chronological():
+    session = generate_session()
+    try:
+        timestamps = [
+            datetime.fromisoformat(event["event_ts"])
+            for event in session["events"]
+        ]
+
+        assert timestamps == sorted(timestamps)
+        print('PASSED: Timestamps on the session events are ordered chronologicaly!')
+    except Exception as e:
+        print(f'FAILED: {e}')
+        raise
+
+def test_purchase_checkout_is_valid():
+    try:
+        for _ in range(10):
+            session = generate_session()
+
+            purchase_events = [
+                event
+                for event in session["events"]
+                if event["event_type"] == "purchase"
+            ]
+
+            for purchase in purchase_events:
+                attributes = purchase["attributes"]
+                checkout_items = attributes["checkout_items"]
+
+                assert len(checkout_items) >= 1
+
+                product_ids = [
+                    item["product_id"]
+                    for item in checkout_items
+                ]
+
+                assert len(product_ids) == len(set(product_ids))
+                assert all(item["quantity"] > 0 for item in checkout_items)
+
+                expected_total = round(
+                    sum(item["sub_total"] for item in checkout_items)
+                    + attributes["shipping_fee"],
+                    2,
+                )
+
+                assert attributes["total_amount"] == expected_total
+        print("PASSED: Purchase checkout is valid!")
+    except Exception as e:
+        print(f'FAILED: {e}')
+        raise
+
+
+if __name__ == "__main__":
+    # from pprint import pprint
+    # Generate a session and print the result
+    # session = generate_session()
+    # pprint(session)
+
+    # Run Tests
+    test_session_starts_and_ends_correctly()
+    test_event_timestamps_are_chronological()
+    test_purchase_checkout_is_valid()
+
+    

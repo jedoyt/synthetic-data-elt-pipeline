@@ -343,3 +343,17 @@ Jed Uñalivia
 Data Engineering Portfolio Project
 
 Synthetic E-Commerce Analytics ELT Pipeline
+
+### Sprint 1: Event-Producing Operational System
+
+Status: Complete
+
+Implemented:
+
+- Synthetic reference-data selection
+- Standardized event generation
+- Browse, abandoned-cart, and purchase journeys
+- Cart update and removal behavior
+- Checkout reconstruction
+- Configurable session batch generation
+- JSON sample output and execution summaries
