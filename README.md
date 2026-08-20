@@ -268,32 +268,6 @@ The completed platform should answer questions such as:
 
 ---
 
-## Current Status
-
-### Phase
-
-✅ Sprint 0 - Project Foundation
-
-### Completed
-
-- Repository initialization
-- Project folder structure
-- Git configuration
-- Requirements file
-- SQLite database creation
-
-### Upcoming
-
-- Event-Producing Operational System
-- Synthetic event generation
-- Pseudo REST API
-- Bronze Layer ingestion
-- SQLite warehouse loading
-- Silver transformations
-- Gold analytics marts
-
----
-
 ## Guiding Principles
 
 This project intentionally prioritizes learning fundamentals over using advanced tools.
@@ -344,7 +318,19 @@ Data Engineering Portfolio Project
 
 Synthetic E-Commerce Analytics ELT Pipeline
 
-### Sprint 1: Event-Producing Operational System
+## Current Status
+
+### ✅ Sprint 0 - Project Foundation
+
+Status: Complete
+
+- Repository initialization
+- Project folder structure
+- Git configuration
+- Requirements file
+- SQLite database creation
+
+### ✅ Sprint 1: Event-Producing Operational System
 
 Status: Complete
 
@@ -357,3 +343,13 @@ Implemented:
 - Checkout reconstruction
 - Configurable session batch generation
 - JSON sample output and execution summaries
+
+### Upcoming
+
+- Pseudo REST API
+- Bronze Layer ingestion
+- SQLite warehouse loading
+- Silver transformations
+- Gold analytics marts
+
+---
