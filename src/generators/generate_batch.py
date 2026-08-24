@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from session_generator import generate_session
+from src.generators.session_generator import generate_session
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR / "sample_output"
@@ -46,11 +46,17 @@ def generate_batch(num_of_sessions: int, save_json: bool = False):
         with open(OUTPUT_FILE, 'w', encoding="utf-8") as file:
             json.dump(sessions, file, indent=4)
 
+    # Percent distributions
+    browse_only = round(100 * summary['browse_only'] / summary['total_sessions'], 0)
+    abandoned_carts = round(100 * summary['abandoned_cart'] / summary['total_sessions'], 0)
+    purchases = round(100 * summary['purchase'] / summary['total_sessions'], 0)
+
+    # Batch summary report
     print("Batch generation complete")
     print(f"Total sessions: {summary['total_sessions']}")
-    print(f"Browse-only sessions: {summary['browse_only']}")
-    print(f"Abandoned-cart sessions: {summary['abandoned_cart']}")
-    print(f"Purchase sessions: {summary['purchase']}")
+    print(f"Browse-only sessions ({browse_only}%): {summary['browse_only']}")
+    print(f"Abandoned-cart sessions ({abandoned_carts}%): {summary['abandoned_cart']}")
+    print(f"Purchase sessions ({purchases}%): {summary['purchase']}")
     print(f"Total events: {summary['total_events']}")
 
     if save_json:
@@ -60,4 +66,4 @@ def generate_batch(num_of_sessions: int, save_json: bool = False):
 
 # Run batch generation
 if __name__ == "__main__":
-    generate_batch(20, True)
+    generate_batch(25, True)

@@ -36,17 +36,18 @@
 import random
 from datetime import UTC, datetime, timedelta
 
-from customer_generator import get_random_customer
-from event_generator import (
+from faker import Faker
+
+from src.generators.customer_generator import get_random_customer
+from src.generators.event_generator import (
     generate_app_close_event,
     generate_app_open_event,
     generate_cart_action_event,
     generate_product_view_event,
     generate_purchase_event,
 )
-from faker import Faker
-from location_generator import get_random_location
-from product_generator import get_random_product
+from src.generators.location_generator import get_random_location
+from src.generators.product_generator import get_random_product
 
 fake = Faker()
 
