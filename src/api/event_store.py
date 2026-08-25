@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
 
-from src.generators.generate_batch import classify_session
 from src.generators.session_generator import generate_session
 
 
@@ -9,14 +8,14 @@ class EventStore:
     def __init__(self):
         self._sessions = []
 
-    def populate(self, num_sessions: int) -> list:
+    def populate(self, num_sessions: int):
         for _ in range(num_sessions):
             self._sessions.append(
                 generate_session()
             )
 
     def get_sessions(self) -> list:
-        return self._sessions
+        return self._sessions.copy()
 
     def get_sessions_since(self, timestamp) -> list:
         """
@@ -46,8 +45,17 @@ class EventStore:
     def count(self) -> int:
         return len(self._sessions)
 
-    def clear(self) -> list:
+    def clear(self):
         self._sessions = []
+
+    def _classify_session(self, session: dict):
+        event_types = [event["event_type"] for event in session["events"]]
+        if "purchase" in event_types:
+            return "purchase"
+        if "cart_action" in event_types:
+            return "abandoned_cart"
+        else:
+            return "browse_only"
 
     def summary(self) -> str:
         summary = {
@@ -59,7 +67,7 @@ class EventStore:
             }
         
         for session in self._sessions:
-            outcome = classify_session(session)
+            outcome = self._classify_session(session)
             summary[outcome] += 1
             summary["total_events"] += len(session["events"])
         
