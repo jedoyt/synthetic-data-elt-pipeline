@@ -3,8 +3,8 @@ import json
 import random
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent
-LOCATION_FILE = BASE_DIR / 'locations.json'
+BASED_DIR = Path(__file__).parent
+LOCATION_FILE = BASED_DIR / 'locations.json'
 
 with open(LOCATION_FILE) as f:
     LOCATIONS = json.load(f)
