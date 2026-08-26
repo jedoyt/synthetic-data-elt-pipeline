@@ -90,12 +90,12 @@ references = ReferenceStore()
 
 @app.get("/products")
 def get_products():
-    return references.reference["products"]()
+    return references.fetch_products()
 
-@app.get("/users")
-def get_users():
-    return references.reference["users"]()
+@app.get("/customers")
+def get_customers():
+    return references.fetch_customers()
 
 @app.get("/locations")
 def get_locations():
-    return references.reference["locations"]()
+    return references.fetch_locations()

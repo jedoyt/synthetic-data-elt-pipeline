@@ -7,16 +7,16 @@ class ReferenceStore:
 
     def __init__(self):
         self.reference = {
-            "products": self._products,
-            "users": self._users,
-            "locations": self._locations,
+            "products": self.fetch_products,
+            "customers": self.fetch_customers,
+            "locations": self.fetch_locations,
         }
 
-    def _products(self):
+    def fetch_products(self):
         return PRODUCTS
 
-    def _users(self):
+    def fetch_customers(self):
         return CUSTOMERS
 
-    def _locations(self):
+    def fetch_locations(self):
         return LOCATIONS
