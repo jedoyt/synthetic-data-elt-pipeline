@@ -60,24 +60,24 @@ class APIClient:
 
 
 # Test APIClient
-if __name__ == "__main__":
-    URL_PREFIX = "http://127.0.0.1:8000"
-    client = APIClient(url_prefix=URL_PREFIX)
+# if __name__ == "__main__":
+#     URL_PREFIX = "http://127.0.0.1:8000"
+#     client = APIClient(url_prefix=URL_PREFIX)
 
-    # Check API health
-    client.get("/health")
+#     # Check API health
+#     client.get("/health")
 
-    # Check number of initial sessions
-    client.get("/sessions/count")
+#     # Check number of initial sessions
+#     client.get("/sessions/count")
 
-    # Test sessions/since/<timestamp>
-    timestamp = "2026-08-29 00:00:00"
-    formatted_ts = timestamp.replace(" ", "%20").replace(":", "%3A").replace("+", "%2B")
-    client.get(f"/sessions/since/{formatted_ts}")
+#     # Test sessions/since/<timestamp>
+#     timestamp = "2026-08-29 00:00:00"
+#     formatted_ts = timestamp.replace(" ", "%20").replace(":", "%3A").replace("+", "%2B")
+#     client.get(f"/sessions/since/{formatted_ts}")
 
-    # Test generation of additional sessions
-    additional_sessions = 10
-    client.post(f"/sessions/generate/{additional_sessions}")
+#     # Test generation of additional sessions
+#     additional_sessions = 10
+#     client.post(f"/sessions/generate/{additional_sessions}")
 
-    # Check again final session counts
-    client.get("/sessions/count")
+#     # Check again final session counts
+#     client.get("/sessions/count")

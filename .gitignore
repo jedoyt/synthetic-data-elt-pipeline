@@ -7,4 +7,5 @@ __pycache__/
 *.pytest_cache
 main.py
 tests/
-scratch_notes.txt
+scratch_notes/
+sample_output/
