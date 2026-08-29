@@ -35,6 +35,9 @@ def health():
 # ------------------- #
 #  Session Endpoints  #
 # ------------------- #
+@app.get("/")
+def index():
+    return {"message": f"Welcome to {app.title}!"}
 
 @app.get("/sessions")
 def get_sessions():

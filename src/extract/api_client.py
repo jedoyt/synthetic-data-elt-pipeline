@@ -28,7 +28,7 @@ class APIClient:
             return_output["http_status_code"] = response.status
             return_output["data"] = None
             return_output["error_message"] = f"Connection Error: {e.reason}"
-        print(json.dumps(return_output, indent=4))
+        # print(json.dumps(return_output, indent=4))
         return return_output
 
     def post(self, endpoint: str, form_data=None):
@@ -55,7 +55,7 @@ class APIClient:
             return_output["http_status_code"] = response.status
             return_output["data"] = None
             return_output["error_message"] = f"Connection Error: {e.reason}"
-        print(json.dumps(return_output, indent=4))
+        # print(json.dumps(return_output, indent=4))
         return return_output
 
 
