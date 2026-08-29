@@ -5,7 +5,11 @@ from src.extract.bronze_writer import BronzeWriter
 URL_PREFIX = "http://127.0.0.1:8000"
 
 def extract_customers():
-
+    """
+    Extract customer reference data
+    from the source API and persist
+    the raw payload into the Bronze layer.
+    """
     client = APIClient(url_prefix=URL_PREFIX)
     writer = BronzeWriter()
 
@@ -15,14 +19,11 @@ def extract_customers():
         records=customers["data"],
         entity_name="customers"
     )
-
+    print("Customer extraction complete!")
+    print(result)
     return result
 
 
 # Test extract_customers
 if __name__ == "__main__":
-
     result = extract_customers()
-
-    print("Customer extraction complete")
-    print(result)
