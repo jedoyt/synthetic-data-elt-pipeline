@@ -1,8 +1,14 @@
+import json
+from pathlib import Path
+
 from src.extract.api_client import APIClient
 from src.extract.bronze_writer import BronzeWriter
 
-# Localhost URL
-URL_PREFIX = "http://127.0.0.1:8000"
+# Open config and fetch BASE_URL
+API_CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs/api_config.json"
+with open(API_CONFIG_PATH) as file:
+    api_config = json.load(file)
+URL_PREFIX = api_config["BASE_URL"]
 
 def extract_products():
     """
