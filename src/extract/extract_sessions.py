@@ -58,7 +58,7 @@ def extract_sessions(since_ts=None):
                 entity_name="sessions"
             )
             print("Full extraction of all sessions complete!")
-            # print(result)
+            print(result)
             return result
 
 
