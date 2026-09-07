@@ -22,7 +22,7 @@ def extract_customers():
     customers = client.get("/customers")
 
     result = writer.write_jsonl(
-        records=customers["data"],
+        records=customers["data"]["records"],
         entity_name="customers"
     )
     print("Customer extraction complete!")

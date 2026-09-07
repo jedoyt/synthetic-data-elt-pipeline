@@ -1,3 +1,6 @@
+from datetime import UTC, datetime
+from urllib.parse import quote
+
 from fastapi import FastAPI, HTTPException
 
 from src.api.event_store import EventStore
@@ -44,13 +47,25 @@ def index():
 @app.get("/sessions")
 def get_sessions():
     """Return all sessions currently held by the event store."""
-    return STORE.get_sessions()
+    # return STORE.get_sessions()
+    return {
+        "request_timestamp": datetime.now(UTC).isoformat(),
+        "endpoint": "/sessions",
+        "record_count": STORE.count(),
+        "records": STORE.get_sessions(),
+    }
 
 @app.get("/sessions/count")
 def get_session_counts():
     """Return the number of sessions currently held by the event store."""
+    # return {
+    #     "count": STORE.count()
+    # }
     return {
-        "count": STORE.count()
+        "request_timestamp": datetime.now(UTC).isoformat(),
+        "endpoint": "/sessions/count",
+        "record_count": STORE.count(),
+        "records": [],
     }
 
 @app.get("/sessions/since/{timestamp}")
@@ -60,9 +75,10 @@ def get_sessions_since(timestamp: str):
         sessions = STORE.get_sessions_since(timestamp)
 
         return {
-            "requested_timestamp": timestamp,
-            "session_count": len(sessions),
-            "sessions": sessions,
+            "request_timestamp": timestamp,
+            "endpoint": f"/sessions/since/{quote(timestamp)}",
+            "record_count": len(sessions),
+            "records": sessions,
         }
     except ValueError:
         raise HTTPException(
@@ -88,8 +104,12 @@ def generate_more_sessions(count: int):
 
     STORE.populate(count)
 
+    # return {"new_total_sessions": STORE.count()}
     return {
-        "new_total_sessions": STORE.count()
+        "request_timestamp": datetime.now(UTC).isoformat(),
+        "endpoint": f"/sessions/generate/{count}",
+        "record_count": STORE.count(),
+        "records": [],
     }
 
 # ------------------- #
@@ -100,14 +120,35 @@ references = ReferenceStore()
 @app.get("/products")
 def get_products():
     """Return the product reference data."""
-    return references.fetch_products()
+    PRODUCTS = references.fetch_products()
+    # return references.fetch_products()
+    return {
+        "request_timestamp": datetime.now(UTC).isoformat(),
+        "endpoint": "/products",
+        "record_count": len(PRODUCTS),
+        "records": PRODUCTS,
+    }
 
 @app.get("/customers")
 def get_customers():
     """Return the customer reference data."""
-    return references.fetch_customers()
+    CUSTOMERS = references.fetch_customers()
+    # return references.fetch_customers()
+    return {
+        "request_timestamp": datetime.now(UTC).isoformat(),
+        "endpoint": "/customers",
+        "record_count": len(CUSTOMERS),
+        "records": CUSTOMERS,
+    }
 
 @app.get("/locations")
 def get_locations():
     """Return the location reference data."""
-    return references.fetch_locations()
+    LOCATIONS = references.fetch_locations()
+    # return references.fetch_locations()
+    return {
+        "request_timestamp": datetime.now(UTC).isoformat(),
+        "endpoint": "/locations",
+        "record_count": len(LOCATIONS),
+        "records": LOCATIONS,
+    }

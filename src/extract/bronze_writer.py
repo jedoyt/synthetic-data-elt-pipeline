@@ -7,7 +7,7 @@ BRONZE_DIR = Path(__file__).resolve().parents[2] / "data/bronze"
 
 class BronzeWriter:
 
-    def write_jsonl(self, records, entity_name: str) -> str:
+    def write_jsonl(self, records, entity_name: str) -> dict:
         """
         Writes a JSONL file out of the received data assigned in `records` parameter
         """

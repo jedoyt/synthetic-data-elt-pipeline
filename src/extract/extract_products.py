@@ -22,7 +22,7 @@ def extract_products():
     products = client.get("/products")
 
     result = writer.write_jsonl(
-        records=products["data"],
+        records=products["data"]["records"],
         entity_name="products"
     )
     print("Product extraction complete!")

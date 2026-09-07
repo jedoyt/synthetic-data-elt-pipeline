@@ -22,7 +22,7 @@ def extract_locations():
     locations = client.get("/locations")
 
     result = writer.write_jsonl(
-        records=locations["data"],
+        records=locations["data"]["records"],
         entity_name="locations"
     )
     print("Location extraction complete!")
