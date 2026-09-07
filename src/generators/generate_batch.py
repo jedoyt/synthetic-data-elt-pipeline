@@ -7,7 +7,12 @@ BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR / "sample_output"
 OUTPUT_FILE = OUTPUT_DIR / "sessions_batch.json"
 
-def classify_session(session: dict) -> dict:
+def classify_session(session: dict) -> str:
+    """
+    Classify a session according to the event types it contains.
+    :param session: dict - A session dictionary containing a list of events
+    :return: str - The classification of the session: "purchase", "abandoned_cart", or "browse_only"
+    """
     event_types = [event["event_type"] for event in session["events"]]
     if "purchase" in event_types:
         return "purchase"
@@ -16,8 +21,13 @@ def classify_session(session: dict) -> dict:
     else:
         return "browse_only"
 
-def generate_batch(num_of_sessions: int, save_json: bool = False):
-    """Generate a batch of sessions and optionally save it as JSON."""
+def generate_batch(num_of_sessions: int, save_json: bool = False) -> list:
+    """
+    Generate a batch of sessions and optionally save it as JSON.
+    :param num_of_sessions: int - The number of sessions to generate
+    :param save_json: bool - Whether to save the generated sessions to a JSON file
+    :return: list - A list of generated session dictionaries
+    """
     if not isinstance(num_of_sessions, int) or isinstance(num_of_sessions, bool):
         raise TypeError("num_of_sessions must be an integer")
     if num_of_sessions < 0:

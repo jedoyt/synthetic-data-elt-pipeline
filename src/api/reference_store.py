@@ -6,6 +6,7 @@ from src.generators.product_generator import PRODUCTS
 class ReferenceStore:
 
     def __init__(self):
+        """Initialize mappings from reference entity names to fetch methods."""
         self.reference = {
             "products": self.fetch_products,
             "customers": self.fetch_customers,
@@ -13,10 +14,13 @@ class ReferenceStore:
         }
 
     def fetch_products(self):
+        """Return all product reference records."""
         return PRODUCTS
 
     def fetch_customers(self):
+        """Return all customer reference records."""
         return CUSTOMERS
 
     def fetch_locations(self):
+        """Return all location reference records."""
         return LOCATIONS

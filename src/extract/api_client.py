@@ -5,9 +5,11 @@ import urllib.request
 
 class APIClient:
     def __init__(self, url_prefix: str):
+        """Initialize a client with the base URL used for API requests."""
         self.url_prefix = url_prefix
 
     def get(self, endpoint: str):
+        """Send a GET request and return its status, data, or error details."""
         url = self.url_prefix + endpoint
         return_output = {}
         try:
@@ -32,6 +34,7 @@ class APIClient:
         return return_output
 
     def post(self, endpoint: str, form_data=None):
+        """Send a POST request and return its status, data, or error details."""
         if form_data is None:
             form_data = {}
         url = self.url_prefix + endpoint

@@ -6,15 +6,18 @@ from src.generators.session_generator import generate_session
 class EventStore:
 
     def __init__(self):
+        """Initialize an empty in-memory collection of sessions."""
         self._sessions = []
 
     def populate(self, num_sessions: int):
+        """Generate and add the requested number of sessions to the store."""
         for _ in range(num_sessions):
             self._sessions.append(
                 generate_session()
             )
 
     def get_sessions(self) -> list:
+        """Return a shallow copy of all sessions in the store."""
         return self._sessions.copy()
 
     def get_sessions_since(self, timestamp) -> list:
@@ -43,12 +46,15 @@ class EventStore:
         return sessions_since
 
     def count(self) -> int:
+        """Return the number of sessions in the store."""
         return len(self._sessions)
 
     def clear(self):
+        """Remove all sessions from the store."""
         self._sessions = []
 
     def _classify_session(self, session: dict):
+        """Classify a session by whether it contains cart or purchase events."""
         event_types = [event["event_type"] for event in session["events"]]
         if "purchase" in event_types:
             return "purchase"
@@ -58,6 +64,7 @@ class EventStore:
             return "browse_only"
 
     def summary(self) -> str:
+        """Return a formatted report of session outcomes and event totals."""
         summary = {
                 "total_sessions": len(self._sessions),
                 "browse_only": 0,

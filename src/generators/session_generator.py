@@ -85,6 +85,9 @@ def _generate_abandoned_cart_session(starting_ts, viewed_products) -> list:
     generated with realistic timestamps and attributes to mimic user behavior.
     Returns a dictionary representing the session data, including session_id, 
     customer_id, location_id, device_type, platform,
+    :params: starting_ts, datetime
+    :params: viewed_products, list
+    :return: events, list
     """
     # Start the event at app_open
     events = [generate_app_open_event(starting_ts)]
@@ -142,6 +145,9 @@ def _generate_purchase_session(starting_ts, viewed_products):
     The session consists of a series of events: app_open, product_view, cart_action, purchase, and app_close events, 
     generated with realistic timestamps and attributes to mimic user behavior.
     Returns a dictionary representing the session data, including session_id, customer_id, location_id, device_type, platform,
+    :params: starting_ts, datetime
+    :params: viewed_products, list
+    :return: events, list
     """
     # Start the event at app_open
     events = [generate_app_open_event(starting_ts)]
@@ -330,6 +336,7 @@ def generate_session() -> dict:
     a 20% chance of cart abandonment, and a 10% chance of successful purchase.
     Returns a dictionary representing the session data, including session_id, customer_id, 
     location_id, device_type, platform, session_start_ts, and a list of events.
+    : return: session_dict, dict
     """
     # Session data
     starting_ts = datetime.now(UTC) - timedelta(minutes=random.randint(0, 1440))
@@ -390,17 +397,19 @@ def generate_session() -> dict:
 
 # TEST FUNCTIONS
 def test_session_starts_and_ends_correctly():
-        session = generate_session()
-        
-        try:
-            assert session["events"][0]["event_type"] == "app_open"
-            assert session["events"][-1]["event_type"] == "app_close"
-            print('PASSED: Session events starts with "app_open" and ends in "app_closed"')
-        except Exception as e:
-            print(f'FAILED: {e}')
-            raise
+    """Verify that generated sessions start and end with the expected events."""
+    session = generate_session()
+
+    try:
+        assert session["events"][0]["event_type"] == "app_open"
+        assert session["events"][-1]["event_type"] == "app_close"
+        print('PASSED: Session events starts with "app_open" and ends in "app_closed"')
+    except Exception as e:
+        print(f'FAILED: {e}')
+        raise
 
 def test_event_timestamps_are_chronological():
+    """Verify that event timestamps in a generated session are ordered."""
     session = generate_session()
     try:
         timestamps = [
@@ -415,6 +424,7 @@ def test_event_timestamps_are_chronological():
         raise
 
 def test_purchase_checkout_is_valid():
+    """Verify checkout items, quantities, and totals for generated purchases."""
     try:
         for _ in range(10):
             session = generate_session()
