@@ -19,11 +19,16 @@ def run_bronze_ingestion() -> dict:
     results = {}
     for entity, extraction_function in extractor_dict.items():
         print(f"Starting extraction for {entity}...")
-        result = extraction_function()
-        # if result:
-        #     print(f"{entity.capitalize()} extraction complete!")
-        #     print(result)
-        results[entity] = result
+        try:
+            result = extraction_function()
+            results[entity] = result
+        except Exception as e:
+            print(f"Error during extraction for {entity}: {e}")
+            results[entity] = {
+                "record_count": 0,
+                "filepath": None,
+                "error": str(e),
+            }
     return results
 
 def print_summary(results: dict):
@@ -37,10 +42,10 @@ def print_summary(results: dict):
     print(summary_title)
     print("=" * len(summary_title))
     for entity, result in results.items():
-        if result:
+        try:
             print(f"{entity.capitalize()}: {result['record_count']} records")
-        else:
-            print(f"{entity.capitalize()}: No data extracted.")
+        except Exception as e:
+            print(f"{entity.capitalize()}: {e}")
     print("_" * len(summary_title))
     print(f"TOTAL RECORDS: {total_records}")
     print("=" * len(summary_title))
