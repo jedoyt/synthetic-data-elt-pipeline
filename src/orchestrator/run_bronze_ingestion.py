@@ -22,7 +22,7 @@ def run_bronze_ingestion() -> dict:
         try:
             result = extraction_function()
             results[entity] = result
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"Error during extraction for {entity}: {e}")
             results[entity] = {
                 "record_count": 0,
@@ -44,7 +44,7 @@ def print_summary(results: dict):
     for entity, result in results.items():
         try:
             print(f"{entity.capitalize()}: {result['record_count']} records")
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"{entity.capitalize()}: {e}")
     print("_" * len(summary_title))
     print(f"TOTAL RECORDS: {total_records}")
