@@ -1,0 +1,14 @@
+{
+  "customers": {
+    "last_extraction_ts": ""
+  },
+  "locations": {
+    "last_extraction_ts": ""
+  },
+  "products": {
+    "last_extraction_ts": ""
+  },
+  "sessions": {
+    "last_extraction_ts": "2026-09-06 00:00:00"
+  }
+}
