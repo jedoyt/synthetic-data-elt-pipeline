@@ -45,6 +45,6 @@ def print_summary(results: dict):
     print("=" * len(summary_title))
 
 # Test run_bronze_ingestion
-if __name__ == "__main__":
-    ingestion_results = run_bronze_ingestion(since_ts=datetime.now(UTC).isoformat())
-    print_summary(ingestion_results)
+# if __name__ == "__main__":
+#     ingestion_results = run_bronze_ingestion(since_ts=datetime.now(UTC).isoformat())
+#     print_summary(ingestion_results)

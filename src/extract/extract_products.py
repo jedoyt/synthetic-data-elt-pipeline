@@ -28,6 +28,7 @@ def extract_products():
         entity_name="products"
     )
     print("Product extraction complete!")
+    result["status"] = "SUCCESS"
     print(result)
     # Save watermark to metadata file
     # The watermark is the last_extraction_ts when extraction of products was completed, which is the current timestamp
@@ -42,5 +43,5 @@ def extract_products():
 
 
 # Test extract_products
-if __name__ == "__main__":
-    result = extract_products()
+# if __name__ == "__main__":
+#     result = extract_products()

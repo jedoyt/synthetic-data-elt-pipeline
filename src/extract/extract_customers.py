@@ -28,6 +28,7 @@ def extract_customers():
         entity_name="customers"
     )
     print("Customer extraction complete!")
+    result["status"] = "SUCCESS"
     print(result)
     # Save watermark to metadata file
     # The watermark is the last_extraction_ts when extraction of customers was completed, which is the current timestamp
@@ -42,5 +43,5 @@ def extract_customers():
 
 
 # Test extract_customers
-if __name__ == "__main__":
-    result = extract_customers()
+# if __name__ == "__main__":
+#     result = extract_customers()

@@ -28,6 +28,7 @@ def extract_locations():
         entity_name="locations"
     )
     print("Location extraction complete!")
+    result["status"] = "SUCCESS"
     print(result)
     # Save watermark to metadata file
     # The watermark is the last_extraction_ts when extraction of locations was completed, which is the current timestamp
@@ -42,5 +43,5 @@ def extract_locations():
 
 
 # Test extract_locations
-if __name__ == "__main__":
-    result = extract_locations()
+# if __name__ == "__main__":
+#     result = extract_locations()

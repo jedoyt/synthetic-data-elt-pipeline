@@ -46,6 +46,7 @@ def extract_sessions(since_ts=None):
                 entity_name="sessions"
             )
             print(f"Sessions extraction since {since_ts} complete!")
+            result["status"] = "SUCCESS"
             print(result)
             # Save watermark to metadata file
             # The watermark is the last_extraction_ts which is the last session_start_ts from the last record in the extracted sessions
@@ -61,8 +62,10 @@ def extract_sessions(since_ts=None):
             print("No bronze JSONL file was written.")
             result = {
                 "filepath": None,
-                "record_count": 0
+                "record_count": 0,
+                "status": "NO RECORDS FOUND"
             }
+            print(result)
         return result
     elif since_ts is None:
         endpoint = "/sessions"
@@ -73,6 +76,7 @@ def extract_sessions(since_ts=None):
                 entity_name="sessions"
             )
             print("Full extraction of all sessions complete!")
+            result["status"] = "SUCCESS"
             print(result)
             # Save watermark to metadata file
             # The watermark is the last_extraction_ts which is the last session_start_ts from the last record in the extracted sessions
@@ -87,6 +91,6 @@ def extract_sessions(since_ts=None):
 
 
 # Test extract_customers
-if __name__ == "__main__":
-    result = extract_sessions(since_ts="2026-09-07 00:00:00")
-    # result = extract_sessions()
+# if __name__ == "__main__":
+#     result = extract_sessions(since_ts="2026-09-07 00:00:00")
+#     # result = extract_sessions()
