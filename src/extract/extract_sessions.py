@@ -15,7 +15,7 @@ URL_PREFIX = api_config["BASE_URL"]
 
 client = APIClient(url_prefix=URL_PREFIX)
 writer = BronzeWriter()
-metadata_manager = MetadataManager(metadata_filename="bronze_metadata.json")
+
 
 def extract_sessions(since_ts=None):
     """
@@ -50,6 +50,7 @@ def extract_sessions(since_ts=None):
             # Save watermark to metadata file
             # The watermark is the last_extraction_ts which is the last session_start_ts from the last record in the extracted sessions
             last_extraction_ts = sessions["data"]["records"][-1]["session_start_ts"]
+            metadata_manager = MetadataManager(metadata_filename="bronze_metadata.json")
             metadata_manager.update_and_save(
                 entity="sessions",
                 metadata_filename="bronze_metadata.json",
@@ -69,6 +70,15 @@ def extract_sessions(since_ts=None):
             )
             print("Full extraction of all sessions complete!")
             print(result)
+            # Save watermark to metadata file
+            # The watermark is the last_extraction_ts which is the last session_start_ts from the last record in the extracted sessions
+            last_extraction_ts = sessions["data"]["records"][-1]["session_start_ts"]
+            metadata_manager = MetadataManager(metadata_filename="bronze_metadata.json")
+            metadata_manager.update_and_save(
+                entity="sessions",
+                metadata_filename="bronze_metadata.json",
+                set_metadata={"last_extraction_ts": last_extraction_ts}
+            )
             return result
 
 
