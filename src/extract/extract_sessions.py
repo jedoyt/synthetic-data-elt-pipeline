@@ -5,6 +5,7 @@ from urllib.parse import quote
 
 from src.extract.api_client import APIClient
 from src.extract.bronze_writer import BronzeWriter
+from src.metadata.metadata_manager import MetadataManager
 
 # Open config and fetch BASE_URL
 API_CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs/api_config.json"
@@ -14,6 +15,7 @@ URL_PREFIX = api_config["BASE_URL"]
 
 client = APIClient(url_prefix=URL_PREFIX)
 writer = BronzeWriter()
+metadata_manager = MetadataManager(metadata_filename="bronze_metadata.json")
 
 def extract_sessions(since_ts=None):
     """
@@ -21,7 +23,7 @@ def extract_sessions(since_ts=None):
     the raw payload into the Bronze layer.
     If a timestamp is provided for since_ts, only sessions since that timestamp will be extracted.
     If no timestamp is provided, all sessions will be extracted.
-    : param since_ts: str - An ISO-8601 format timestamp
+    : param since_ts: str - An ISO-8601 format timestamp (e.g., 'YYYY-MM-DD hh:mm:ss' or 'YYYY-MM-DDThh:mm:ss+00:00') to filter sessions since that timestamp.
     : return: a dictionary containing the filepath of the output JSONL and record counts written
     : rtype: dict
     """
@@ -45,6 +47,14 @@ def extract_sessions(since_ts=None):
             )
             print(f"Sessions extraction since {since_ts} complete!")
             print(result)
+            # Save watermark to metadata file
+            # The watermark is the last_extraction_ts which is the last session_start_ts from the last record in the extracted sessions
+            last_extraction_ts = sessions["data"]["records"][-1]["session_start_ts"]
+            metadata_manager.update_and_save(
+                entity="sessions",
+                metadata_filename="bronze_metadata.json",
+                set_metadata={"last_extraction_ts": last_extraction_ts}
+            )
             return result
         else:
             print(f"No sessions found since {since_ts}!")

@@ -31,7 +31,7 @@ class BronzeWriter:
         with open(output_path, "w") as f:
             f.writelines(json.dumps(record_dict) + '\n' for record_dict in records)
         return {
-            "filepath": output_path,
+            "filepath": str(output_path),
             "record_count": len(records)
         }
 

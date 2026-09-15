@@ -4,7 +4,7 @@ from src.extract.extract_products import extract_products
 from src.extract.extract_sessions import extract_sessions
 
 
-def run_bronze_ingestion() -> dict:
+def run_bronze_ingestion(since_ts=None) -> dict:
     """
     Run the Bronze ingestion process for all reference and session data.
     : return: A dictionary containing the results of the ingestion process for each entity.
@@ -20,7 +20,10 @@ def run_bronze_ingestion() -> dict:
     for entity, extraction_function in extractor_dict.items():
         print(f"Starting extraction for {entity}...")
         try:
-            result = extraction_function()
+            if extraction_function == extract_sessions:
+                result = extraction_function(since_ts=since_ts)
+            else:
+                result = extraction_function()
             results[entity] = result
         except Exception as e:  # noqa: BLE001
             print(f"Error during extraction for {entity}: {e}")
@@ -50,6 +53,7 @@ def print_summary(results: dict):
     print(f"TOTAL RECORDS: {total_records}")
     print("=" * len(summary_title))
 
+# Test run_bronze_ingestion
 if __name__ == "__main__":
-    ingestion_results = run_bronze_ingestion()
+    ingestion_results = run_bronze_ingestion(since_ts="2026-09-15 00:00:00")
     print_summary(ingestion_results)
