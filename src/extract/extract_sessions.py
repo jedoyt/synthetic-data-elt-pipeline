@@ -56,10 +56,14 @@ def extract_sessions(since_ts=None):
                 metadata_filename="bronze_metadata.json",
                 set_metadata={"last_extraction_ts": last_extraction_ts}
             )
-            return result
         else:
             print(f"No sessions found since {since_ts}!")
             print("No bronze JSONL file was written.")
+            result = {
+                "filepath": None,
+                "record_count": 0
+            }
+        return result
     elif since_ts is None:
         endpoint = "/sessions"
         sessions = client.get(endpoint)

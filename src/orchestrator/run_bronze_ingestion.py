@@ -1,3 +1,5 @@
+from datetime import UTC, datetime
+
 from src.extract.extract_customers import extract_customers
 from src.extract.extract_locations import extract_locations
 from src.extract.extract_products import extract_products
@@ -19,19 +21,11 @@ def run_bronze_ingestion(since_ts=None) -> dict:
     results = {}
     for entity, extraction_function in extractor_dict.items():
         print(f"Starting extraction for {entity}...")
-        try:
-            if extraction_function == extract_sessions:
-                result = extraction_function(since_ts=since_ts)
-            else:
-                result = extraction_function()
-            results[entity] = result
-        except Exception as e:  # noqa: BLE001
-            print(f"Error during extraction for {entity}: {e}")
-            results[entity] = {
-                "record_count": 0,
-                "filepath": None,
-                "error": str(e),
-            }
+        if extraction_function == extract_sessions:
+            result = extraction_function(since_ts=since_ts)
+        else:
+            result = extraction_function()
+        results[entity] = result
     return results
 
 def print_summary(results: dict):
@@ -45,15 +39,12 @@ def print_summary(results: dict):
     print(summary_title)
     print("=" * len(summary_title))
     for entity, result in results.items():
-        try:
-            print(f"{entity.capitalize()}: {result['record_count']} records")
-        except Exception as e:  # noqa: BLE001
-            print(f"{entity.capitalize()}: {e}")
+        print(f"{entity.capitalize()}: {result['record_count']} records")
     print("_" * len(summary_title))
     print(f"TOTAL RECORDS: {total_records}")
     print("=" * len(summary_title))
 
 # Test run_bronze_ingestion
 if __name__ == "__main__":
-    ingestion_results = run_bronze_ingestion(since_ts="2026-09-15 00:00:00")
+    ingestion_results = run_bronze_ingestion(since_ts=datetime.now(UTC).isoformat())
     print_summary(ingestion_results)
