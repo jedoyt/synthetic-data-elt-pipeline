@@ -1,5 +1,3 @@
-from datetime import UTC, datetime
-
 from src.extract.extract_customers import extract_customers
 from src.extract.extract_locations import extract_locations
 from src.extract.extract_products import extract_products
@@ -46,5 +44,11 @@ def print_summary(results: dict):
 
 # Test run_bronze_ingestion
 # if __name__ == "__main__":
-#     ingestion_results = run_bronze_ingestion(since_ts=datetime.now(UTC).isoformat())
-#     print_summary(ingestion_results)
+#     # # Run Bronze ingestion at full extraction
+#     # ingestion_results = run_bronze_ingestion(since_ts=None)
+#     # print_summary(ingestion_results)
+
+#     # Run Bronze ingestion with the current timestamp as the watermark for sessions
+#     # from datetime import UTC, datetime
+#     # ingestion_results = run_bronze_ingestion(since_ts=datetime.now(UTC).isoformat())
+#     # print_summary(ingestion_results)

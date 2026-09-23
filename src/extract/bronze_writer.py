@@ -10,6 +10,8 @@ class BronzeWriter:
     def write_jsonl(self, records, entity_name: str) -> dict:
         """
         Writes a JSONL file out of the received data assigned in `records` parameter
+        :param records: A list of dictionaries or a single dictionary to be written to a JSONL file
+        :param entity_name: The name of the entity to be used in the output filename
         """
 
         # Ensure records is either a Python list or a Python dictionary
