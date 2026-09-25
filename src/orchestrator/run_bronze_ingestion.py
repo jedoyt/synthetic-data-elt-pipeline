@@ -42,13 +42,18 @@ def print_summary(results: dict):
     print(f"TOTAL RECORDS: {total_records}")
     print("=" * len(summary_title))
 
-# Test run_bronze_ingestion
-# if __name__ == "__main__":
-#     # # Run Bronze ingestion at full extraction
-#     # ingestion_results = run_bronze_ingestion(since_ts=None)
-#     # print_summary(ingestion_results)
 
-#     # Run Bronze ingestion with the current timestamp as the watermark for sessions
-#     # from datetime import UTC, datetime
-#     # ingestion_results = run_bronze_ingestion(since_ts=datetime.now(UTC).isoformat())
-#     # print_summary(ingestion_results)
+# Test run_bronze_ingestion
+if __name__ == "__main__":
+    print("BRONZE INGESTION STARTED...")
+    since_ts = input("Enter a watermark timestamp for sessions (ISO format), or press Enter for full extraction:\n")
+
+    if since_ts:
+        # Run Bronze ingestion with the current timestamp as the watermark for sessions
+        from datetime import UTC, datetime
+        ingestion_results = run_bronze_ingestion(since_ts=datetime.now(UTC).isoformat())
+        print_summary(ingestion_results)
+    else:
+        # Run Bronze ingestion at full extraction
+        ingestion_results = run_bronze_ingestion(since_ts=None)
+        print_summary(ingestion_results)
