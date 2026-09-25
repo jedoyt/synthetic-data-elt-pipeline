@@ -52,12 +52,8 @@ def transform_products():
             
             elif value is None:
                 if key in ("product_name", "url"):
-                    try:
-                        assert value is not None
-                    except AssertionError as e:
-                        print(f"AssertionError: {e}")
-                        print(f"{key} cannot be None for this record: {record}")
-                        raise
+                    if value is None:
+                        raise ValueError(f"{key} cannot be None for this record: {record}")
                 else:
                     staged_record[key] = ""
                     continue
