@@ -1,20 +1,19 @@
 import json
-from datetime import datetime
 from pathlib import Path
 
 from src.transform.silver_writer import SilverWriter
 
 
-def transform_customers():
+def transform_products():
     """
-    Transform customer reference data
+    Transform product reference data
     from the Bronze layer to the Silver layer.
     """
     silver_writer = SilverWriter()
 
     # Source directory for bronze files
     BRONZE_DIR = Path(__file__).resolve().parents[2] / "data/bronze"
-    entity = "customers"
+    entity = "products"
 
     # Get filenames in the bronze directory for the specified entity
     bronze_entity_dir = BRONZE_DIR / entity
@@ -41,36 +40,18 @@ def transform_customers():
     for record in bronze_records:
         staged_record = {}
         for key, value in record.items():
-            if key == "age" and value is not None:
+            if key == "price" and value is not None:
                 try:
-                    # Ensure that age is an integer and greater than 0
-                    try:
-                        assert int(value) > 0
-                    except AssertionError as e:
-                        print(f"AssertionError: {e}")
-                        print(f"Age must be a positive integer for this record: {record}")
-                        raise
-                    staged_record[key] = int(value)
+                    # Ensure that price is a float
+                    staged_record[key] = float(value)
                     continue
                 except Exception as e:
                     print(f"Exception: {e}")
-                    print(f"Unable to convert {key} ({value}) to integer from this record:\n{record}")
-                    raise
-
-            # Create an additional data by extracting the date from registration_ts 
-            # and naming the key "registration_date"
-            elif key == "registration_ts" and value is not None:
-                try:
-                    staged_record[key] = value
-                    staged_record["registration_date"] = datetime.fromisoformat(value).date()
-                    continue
-                except Exception as e:
-                    print(f"Exception: {e}")
-                    print(f"Unable to extract date from {key} ({value}) for this record: {record}")
+                    print(f"Unable to convert {key} ({value}) to float from this record:\n{record}")
                     raise
             
             elif value is None:
-                if key in ("username", "email"):
+                if key in ("product_name", "url"):
                     try:
                         assert value is not None
                     except AssertionError as e:
@@ -92,6 +73,6 @@ def transform_customers():
     return result
 
 
-# Test transform_customers
+# Test transform_products
 if __name__ == "__main__":
-    transform_customers()
+    transform_products()
