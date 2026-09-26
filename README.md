@@ -116,9 +116,9 @@ Example:
 ```json
 {
   "event_type": "product_view",
-  "session_id": "S123",
-  "customer_id": "C456",
-  "product_id": "P789"
+  "session_id": "26a2c3cd-953f-4585-a203-561b4a415534",
+  "customer_id": "456",
+  "product_id": "789"
 }
 ```
 
