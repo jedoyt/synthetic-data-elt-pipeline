@@ -3,7 +3,7 @@ from pathlib import Path
 
 DB_PATH = Path(__file__).resolve().parents[2] / "data/gold/analytics.db"
 
-class SQLiteManager():
+class SQLiteManager:
     def __init__(self):
         # Open DB
         self.connection = sqlite3.connect(DB_PATH)
