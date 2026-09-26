@@ -63,29 +63,34 @@ These events become the source data for the analytics platform.
 Event-Producing Operational System
                 │
                 ▼
-        Pseudo REST API
+         Event Store
                 │
                 ▼
-          Extract Layer
-            (Python)
+        FastAPI REST API
+                │
+                ▼
+           API Client
+                │
+                ▼
+        Bronze Extraction
                 │
                 ▼
           Bronze Layer
-        (Raw JSONL Events)
+         (Raw JSONL)
                 │
                 ▼
-          Raw SQLite
+      Silver Transformations
                 │
                 ▼
           Silver Layer
-      (SQL Transformations)
+              (CSV)
                 │
                 ▼
-           Gold Layer
-       (Analytics Marts)
+        Gold Warehouse
+            (SQLite)
                 │
                 ▼
-        Business Insights
+       Analytics & Insights
 ```
 
 ---
@@ -322,102 +327,157 @@ Synthetic E-Commerce Analytics ELT Pipeline
 
 ### ✅ Sprint 0 - Project Foundation
 
-Status: Complete
-
+Completed:
 - Repository initialization
-- Project folder structure
-- Git configuration
-- Requirements file
-- SQLite database creation
-
-### ✅ Sprint 1: Event-Producing Operational System
-
-Status: Complete
-
-Implemented:
-
-- Synthetic reference-data selection
-- Standardized event generation
-- Browse, abandoned-cart, and purchase journeys
-- Cart update and removal behavior
-- Checkout reconstruction
-- Configurable session batch generation
-- JSON sample output and execution summaries
-
-#### What Sprint 1 taught:
-- Event Modeling
-- Session Reconstruction
-- Business State
-- Synthetic Data Generation
-
-### Sprint 2: Pseudo REST API + Bronze Ingestion
-
-Status: In progress
-
-#### Deliverables:
-- In-memory event store
-      * `src/api/event_store.py`
-      * Responsibilities:
-            - Generate Sessions
-            - Hold sessions in memory
-            - Provide retrieval functions
-- Pseudo REST API (using FastAPI)
-      * `src/api/app.py`
-      * Endpoint 1, GET /health
-      * Endpoint 2, GET /sessions
-      * Endpoint 3, GET /session?since=<timestamp>
-- Extractor
-      * `src/extract/extract_sessions.py`
-      * Responsibilities
-            - Call PI
-            - Receive sessions
-            - Return list
-- Bronze Layer
-      * `data/bronze/`
-      * in `.jsonl` format
-- Metadata Tracking
-      * `metadata.sqlite`
-      * `pipeline_metadata.json`
-- Folder Structure
-```text
-src/
-
-├── api/
-│   ├── app.py
-│   └── event_store.py
-
-├── extract/
-│   └── extract_sessions.py
-
-├── metadata/
-│   └── metadata_manager.py
-```
-
-#### Acceptance Criteria
-1. `python app.py` launches the API
-2. `python extract_session.py`
-      - produces 25 sessions extracted
-      - bronze file created
-      - watermark updated
-      - creates:
-            * `data/bronze/`
-            * `session_*.jsonl`
-
-### What Sprint 2 will teach
-- Source Systems
-- API Contracts
-- Data Ingestion
-- Bronze Architecture
-- Incremental Extraction
-- Metadata Tracking
-- Raw Data Preservation
-
-### Upcoming
-
-- Pseudo REST API
-- Bronze Layer ingestion
-- SQLite warehouse loading
-- Silver transformations
-- Gold analytics marts
+- Git setup
+- Project structure
+- Requirements management
+- Development environment setup
 
 ---
+
+### ✅ Sprint 1 - Event-Producing Operational System (EPOS)
+
+Completed:
+- Customer generator
+- Product generator
+- Location generator
+- Event generator
+- Session generator
+- Batch session generation
+- Browse journeys
+- Abandoned-cart journeys
+- Purchase journeys
+
+Key Concepts:
+- Event modeling
+- Synthetic data generation
+- Session reconstruction
+- Customer journey simulation
+
+---
+
+### ✅ Sprint 2.1 - Event Store
+
+Completed:
+- In-memory EventStore
+- Session retrieval
+- Session counting
+- Session clearing
+- Incremental session retrieval
+
+Key Concepts:
+- Source systems
+- Operational storage
+- Incremental data access
+
+---
+
+### ✅ Sprint 2.2 - REST API
+
+Completed:
+- FastAPI implementation
+- Health endpoint
+- Sessions endpoint
+- Incremental sessions endpoint
+- Customers endpoint
+- Products endpoint
+- Locations endpoint
+
+Key Concepts:
+- API contracts
+- REST design
+- Source system abstraction
+
+---
+
+### ✅ Sprint 2.3 - Bronze Extraction Layer
+
+Completed:
+- API Client
+- Bronze Writer
+- Customer extractor
+- Product extractor
+- Location extractor
+- Session extractor
+
+Outputs:
+- Bronze JSONL files
+
+Key Concepts:
+- Data ingestion
+- Raw data preservation
+- ELT architecture
+
+---
+
+### ✅ Sprint 2.4 - Bronze Ingestion Orchestrator
+
+Completed:
+- Bronze pipeline runner
+- Extraction orchestration
+- Execution summaries
+
+Key Concepts:
+- Pipeline orchestration
+- Execution management
+
+---
+
+### ✅ Sprint 2.5 - Metadata Tracking & Watermarks
+
+Completed:
+- Metadata Manager
+- Watermark tracking
+- Incremental session extraction
+- Metadata persistence
+
+Key Concepts:
+- Incremental loading
+- Pipeline state management
+- Watermarking
+
+---
+
+### ✅ Sprint 3.1 - Silver Transformation Layer
+
+Completed:
+- Silver Writer
+- Customer transformations
+- Product transformations
+- Location transformations
+- Session transformations
+- Session event normalization
+
+Silver Outputs:
+- customers.csv
+- products.csv
+- locations.csv
+- sessions.csv
+- session_events.csv
+
+Key Concepts:
+- Data standardization
+- Validation
+- Type casting
+- Dimensional modeling foundations
+- Event flattening
+
+---
+
+### 🚧 Sprint 3.2 - Gold Warehouse (Current Sprint)
+
+Planned:
+- SQLite warehouse
+- Dimension tables
+- Fact table
+- CSV-to-SQLite loading
+- Referential integrity
+- Analytical SQL queries
+
+Target Tables:
+- dim_customers
+- dim_products
+- dim_locations
+- dim_sessions
+- fact_session_events
