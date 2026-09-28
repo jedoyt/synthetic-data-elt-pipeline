@@ -17,7 +17,7 @@ class SilverWriter:
         # Ensure records is a valid list
         if not isinstance(records, list):
             print("TypeError: The list of records is not a valid list")
-            print("No CSV file will be written for this entity.")
+            print(f"No CSV file will be written for this entity ({entity_name}).")
             return {
                         "filepath": None,
                         "record_count": 0,
@@ -36,7 +36,7 @@ class SilverWriter:
                 writer = csv.DictWriter(csv_file, fieldnames=records[0].keys())
                 writer.writeheader()
                 writer.writerows(records)
-                print("Silver CSV file written successfully!")
+                print(f"Silver CSV file written successfully! ({output_filename})")
                 return {
                     "filepath": str(output_path),
                     "record_count": len(records)
@@ -44,7 +44,7 @@ class SilverWriter:
             # Ensure records is not empty
             elif not records:
                 print("ValueError: The list of records is empty")
-                print("No CSV file will be written for this entity.")
+                print(f"No CSV file will be written for this entity ({entity_name}).")
                 return {
                     "filepath": None,
                     "record_count": 0,
