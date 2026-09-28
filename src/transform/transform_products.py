@@ -49,7 +49,8 @@ def transform_products():
                     print(f"Exception: {e}")
                     print(f"Unable to convert {key} ({value}) to float from this record:\n{record}")
                     raise
-            
+            elif key == 'sub-category':
+                staged_record['sub_category'] = value
             elif value is None:
                 if key in ("product_name", "url"):
                     if value is None:

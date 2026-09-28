@@ -83,6 +83,10 @@ def transform_customers():
             else:
                 staged_record[key] = value
                 continue
+            # Add registration_date
+            registration_dt = datetime.fromisoformat(record['registration_ts']) # Convert timestamp string to datetime object
+            staged_record['registration_date'] = registration_dt.date()
+        
         staged_records.append(staged_record)
 
     # Transform by writing the records to a CSV file in the Silver layer
