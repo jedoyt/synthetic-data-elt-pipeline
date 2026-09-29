@@ -2,6 +2,9 @@ __pycache__/
 .venv/
 *.pyc
 *.db
+*.jsonl
+*.json
+*.csv
 .DS_Store
 *.vscode
 *.pytest_cache
