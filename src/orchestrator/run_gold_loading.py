@@ -40,7 +40,7 @@ def print_summary(results: dict):
     for table_name, result in results.items():
         print(f"{table_name}: {result['record_count']} records")
     print("_" * len(summary_title))
-    print(f"TOTAL RECORDS: {total_records}")
+    print(f"TOTAL LOADED: {total_records}")
     print("=" * len(summary_title))    
 
 if __name__ == "__main__":
