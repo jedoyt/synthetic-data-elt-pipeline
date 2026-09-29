@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS dim_products (
     category TEXT,
     sub_category TEXT,
     product_name TEXT,
+    description TEXT,
     price REAL,
     url TEXT
 );
