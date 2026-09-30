@@ -18,14 +18,17 @@ def check_or_create_tables(sqlite_manager, schema_file=None):
 
     if schema_file:
        sqlite_manager.execute_script(SCHEMA_PATH)
+       print("Creating database tables...")
     
     sqlite_manager.cursor.execute(
         "SELECT * FROM sqlite_master WHERE type='table';"
     )
     sqlite_manager.connection.commit()
-    print("Checking existing database tables...")
+    if schema_file is None:
+        print("Checking existing database tables...")
     for i, item in enumerate(sqlite_manager.cursor.fetchall(), start=1):
-        print(f'\n{item[0]} {i}: {item[1]}')
+        print(f'{item[0]} {i}: {item[1]}')
+    print("SQL script executed successfully!\n")
 
 def load_csv(csv_path) -> list[dict]:
     with open(csv_path, newline="") as file:
@@ -42,27 +45,28 @@ def load_csv_to_table(csv_path, table_name, sqlite_manager):
     print(results)
     return results
 
-if __name__ == '__main__':
-    sqlite_manager = SQLiteManager()
+# Test load_csv_to_table
+# if __name__ == '__main__':
+#     sqlite_manager = SQLiteManager()
 
-    ENTITY_TABLE_MAP = {
-        "customers": "dim_customers",
-        "products": "dim_products",
-        "locations": "dim_locations",
-        "sessions": "dim_sessions",
-        "session_events": "fact_session_events",
-    }
+#     ENTITY_TABLE_MAP = {
+#         "customers": "dim_customers",
+#         "products": "dim_products",
+#         "locations": "dim_locations",
+#         "sessions": "dim_sessions",
+#         "session_events": "fact_session_events",
+#     }
     
-    # # Insert rows
-    # for entity, table_name in ENTITY_TABLE_MAP.items():
-    #     csv_path = SILVER_PATH / f"{entity}/{entity}.csv"
-    #     result = load_csv_to_table(csv_path, table_name, sqlite_manager)
-    #     print(result)
+#     # # Insert rows
+#     # for entity, table_name in ENTITY_TABLE_MAP.items():
+#     #     csv_path = SILVER_PATH / f"{entity}/{entity}.csv"
+#     #     result = load_csv_to_table(csv_path, table_name, sqlite_manager)
+#     #     print(result)
 
-    # Drop Tables
-    for table_name in ENTITY_TABLE_MAP.values():
-        drop_result = sqlite_manager.drop(table_name)
-        print(drop_result)
+#     # # Drop Tables
+#     # for table_name in ENTITY_TABLE_MAP.values():
+#     #     drop_result = sqlite_manager.drop(table_name)
+#     #     print(drop_result)
 
-    # # Create Tables
-    # check_or_create_tables(SCHEMA_PATH)
+#     # # Create Tables
+#     # check_or_create_tables(SCHEMA_PATH)

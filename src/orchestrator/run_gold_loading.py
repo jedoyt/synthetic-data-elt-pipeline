@@ -46,6 +46,20 @@ def print_summary(results: dict):
 if __name__ == "__main__":
     sqlite_manager = SQLiteManager()
 
+    # During development stage only!
+    # Drop all tables first before rerun of gold loading orchestration
+    tables = [
+            "dim_customers",
+            "dim_products",
+            "dim_locations",
+            "dim_sessions",
+            "fact_session_events",
+        ]
+    for table_name in tables:
+        drop_result = sqlite_manager.drop(table_name)
+        print(drop_result)
+
+    # Gold Loading Orchestration
     # Create the database tables
     check_or_create_tables(sqlite_manager=sqlite_manager, schema_file=SCHEMA_PATH)
 

@@ -61,35 +61,35 @@ class SQLiteManager:
         print("Database connection closed!")
 
 
-# Test SQLiteManager
-if __name__ == "__main__":
-    # from pprint import pprint
-    manager = SQLiteManager()
+# # Test SQLiteManager
+# if __name__ == "__main__":
+#     # from pprint import pprint
+#     manager = SQLiteManager()
 
-    # # Path to schema.sql
-    # SCHEMA_PATH = Path(__file__).resolve().parents[2] / "sql/schema.sql"
+#     # # Path to schema.sql
+#     # SCHEMA_PATH = Path(__file__).resolve().parents[2] / "sql/schema.sql"
 
-    # # Create the tables
-    # manager.execute_script(SCHEMA_PATH)
-    # manager.cursor.execute(
-    #     "SELECT * FROM sqlite_master WHERE type='table';"
-    # )
-    # manager.connection.commit()
-    # # Check the tables
-    # for item in manager.cursor.fetchall():
-    #     print(f'\n{item[0]}: {item[1]}')
-    #     pprint(item[4])
+#     # # Create the tables
+#     # manager.execute_script(SCHEMA_PATH)
+#     # manager.cursor.execute(
+#     #     "SELECT * FROM sqlite_master WHERE type='table';"
+#     # )
+#     # manager.connection.commit()
+#     # # Check the tables
+#     # for item in manager.cursor.fetchall():
+#     #     print(f'\n{item[0]}: {item[1]}')
+#     #     pprint(item[4])
 
-    # # Access the tables
-    # manager.connection = sqlite3.Row
+#     # # Access the tables
+#     # manager.connection = sqlite3.Row
 
-    # Check the first few rows of table
-    table_name = "dim_customers"
-    sample_rows = manager.cursor.execute(
-        f"SELECT * FROM {table_name} LIMIT 5;"
-    ).fetchall()
-    print(f"Table: {table_name}")
-    for row in sample_rows:
-        print(row)
+#     # Check the first few rows of table
+#     table_name = "dim_customers"
+#     sample_rows = manager.cursor.execute(
+#         f"SELECT * FROM {table_name} LIMIT 5;"
+#     ).fetchall()
+#     print(f"Table: {table_name}")
+#     for row in sample_rows:
+#         print(row)
 
-    manager.close()
+#     manager.close()
