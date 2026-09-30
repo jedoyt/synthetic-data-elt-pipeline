@@ -37,7 +37,7 @@ def load_csv_to_table(csv_path, table_name, sqlite_manager):
     print(f"Silver source: {csv_path}")
     rows = load_csv(csv_path)
     results = sqlite_manager.insert_rows(table_name, rows)
-    if results:
+    if results['record_count']:
         results['status']= 'SUCCESS'
     print(results)
     return results
