@@ -34,9 +34,9 @@ class SQLiteManager:
             self.cursor.executemany(sql, tuple_rows)
             self.connection.commit()
             row_count += len(tuple_rows)
-        except sqlite3.IntegrityError:
+        except sqlite3.IntegrityError as exc:
             # A row may already be existing in table based on PRIMARY KEY
-            print("UNIQUE constraint failed: dim_customers.customer_id")
+            print(f"IntegrityError loading\n{table_name}: {exc}")
             row_count = 0
         print(f"{row_count} inserted to table {table_name}")
         return {
