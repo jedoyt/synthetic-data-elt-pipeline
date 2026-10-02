@@ -60,37 +60,40 @@ These events become the source data for the analytics platform.
 ## Architecture
 
 ```text
-Event-Producing Operational System
-                │
-                ▼
-         Event Store
-                │
-                ▼
-        FastAPI REST API
-                │
-                ▼
-           API Client
-                │
-                ▼
-        Bronze Extraction
-                │
-                ▼
-          Bronze Layer
-         (Raw JSONL)
-                │
-                ▼
+      Event-Producing
+      Operational System 
+      (EPOS)
+            │
+            ▼
+      Event Store
+            │
+            ▼
+      FastAPI REST API
+            │
+            ▼
+      API Client
+            │
+            ▼
+      Bronze Extraction
+            │
+            ▼
+      Bronze Layer
+      (Raw JSONL)
+            │
+            ▼
       Silver Transformations
-                │
-                ▼
-          Silver Layer
-              (CSV)
-                │
-                ▼
-        Gold Warehouse
-            (SQLite)
-                │
-                ▼
-       Analytics & Insights
+            │
+            ▼
+      Silver Layer
+      (CSV)
+            │
+            ▼
+      Gold Warehouse Loading
+      (SQLite)
+            │
+            ▼
+      Analytics & 
+      Business Metrics
 ```
 
 ---
@@ -465,19 +468,50 @@ Key Concepts:
 
 ---
 
-### 🚧 Sprint 3.2 - Gold Warehouse (Current Sprint)
+### ✅ Sprint 3.2 - Gold Warehouse
 
-Planned:
-- SQLite warehouse
-- Dimension tables
-- Fact table
+Completed:
+- SQLite warehouse schema
+- analytics.db creation
+- SQLiteManager
 - CSV-to-SQLite loading
-- Referential integrity
-- Analytical SQL queries
+- Gold loading orchestration
+- Dimension table modeling
+- Fact table modeling
+- Primary key constraints
+- Foreign key relationships
+- Parameterized SQL inserts
+- Warehouse validation
 
-Target Tables:
+Gold Tables:
 - dim_customers
 - dim_products
 - dim_locations
 - dim_sessions
 - fact_session_events
+
+Warehouse Statistics:
+- dim_customers: 1000 rows
+- dim_products: 1000 rows
+- dim_locations: 1000 rows
+- dim_sessions: 100 rows
+- fact_session_events: 605 rows
+
+Key Concepts:
+- Data warehousing
+- Dimensional modeling
+- Fact and dimension tables
+- Relational design
+- Referential integrity
+- SQLite
+- Bulk loading
+- ELT loading patterns
+
+---
+
+### 🚧 Sprint 3.3 - Analytics & Business Metrics (Current Sprint)
+
+Objectives:
+- Warehouse validation queries
+- Analytical SQL development
+- Business KPI calculations

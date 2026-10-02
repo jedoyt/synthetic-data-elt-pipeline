@@ -1,8 +1,6 @@
 import csv
 from pathlib import Path
 
-from src.load.sqlite_manager import SQLiteManager
-
 # Path to schema.sql
 SCHEMA_PATH = Path(__file__).resolve().parents[2] / "sql/schema.sql"
 
@@ -47,8 +45,9 @@ def load_csv_to_table(csv_path, table_name, sqlite_manager):
 
 # Test load_csv_to_table
 # if __name__ == '__main__':
+#     from src.load.sqlite_manager import SQLiteManager
 #     sqlite_manager = SQLiteManager()
-
+#
 #     ENTITY_TABLE_MAP = {
 #         "customers": "dim_customers",
 #         "products": "dim_products",
@@ -56,7 +55,7 @@ def load_csv_to_table(csv_path, table_name, sqlite_manager):
 #         "sessions": "dim_sessions",
 #         "session_events": "fact_session_events",
 #     }
-    
+#
 #     # # Insert rows
 #     # for entity, table_name in ENTITY_TABLE_MAP.items():
 #     #     csv_path = SILVER_PATH / f"{entity}/{entity}.csv"

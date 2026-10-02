@@ -1,37 +1,40 @@
 # Architecture
 
 ```text
-Event-Producing Operational System
-                │
-                ▼
-         Event Store
-                │
-                ▼
-        FastAPI REST API
-                │
-                ▼
-           API Client
-                │
-                ▼
-        Bronze Extraction
-                │
-                ▼
-          Bronze Layer
-         (Raw JSONL)
-                │
-                ▼
+      Event-Producing
+      Operational System 
+      (EPOS)
+            │
+            ▼
+      Event Store
+            │
+            ▼
+      FastAPI REST API
+            │
+            ▼
+      API Client
+            │
+            ▼
+      Bronze Extraction
+            │
+            ▼
+      Bronze Layer
+      (Raw JSONL)
+            │
+            ▼
       Silver Transformations
-                │
-                ▼
-          Silver Layer
-              (CSV)
-                │
-                ▼
-        Gold Warehouse
-            (SQLite)
-                │
-                ▼
-       Analytics & Insights
+            │
+            ▼
+      Silver Layer
+      (CSV)
+            │
+            ▼
+      Gold Warehouse Loading
+      (SQLite)
+            │
+            ▼
+      Analytics & 
+      Business Metrics
 ```
 
 ---
