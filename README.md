@@ -114,14 +114,36 @@ Characteristics:
 - Event-driven
 - JSONL storage
 
-Example:
+Example Session Raw Data (product view only):
 
 ```json
 {
-  "event_type": "product_view",
-  "session_id": "26a2c3cd-953f-4585-a203-561b4a415534",
-  "customer_id": "456",
-  "product_id": "789"
+      "session_id": "1f5e0553-44df-4d0c-a7e9-5f3ec1fd5ac2", 
+      "customer_id": 501, 
+      "location_id": 2, 
+      "device_type": "mobile", 
+      "platform": "ios", 
+      "session_start_ts": "2026-09-24T18:32:35+00:00", 
+      "events": [
+            {
+                  "event_id": "9b8ee657-bf03-4ec2-8ffe-f9343b1314c4", 
+                  "event_type": "app_open", 
+                  "event_ts": "2026-09-24T18:32:35+00:00", 
+                  "attributes": {}
+            }, 
+            {
+                  "event_id": "1afddfcb-d61f-48e0-9a87-ae4e081b97fe", 
+                  "event_type": "product_view", 
+                  "event_ts": "2026-09-24T18:35:31+00:00", 
+                  "attributes": {"product_id": 168}
+            }, 
+            {
+                  "event_id": "658cc561-bc44-4d59-a74b-5a97928b26f8", 
+                  "event_type": "app_close", 
+                  "event_ts": "2026-09-24T18:36:23+00:00", 
+                  "attributes": {}
+            }
+      ]
 }
 ```
 

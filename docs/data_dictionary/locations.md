@@ -24,3 +24,14 @@ longitude
 Type: FLOAT, float
 Description: a coordinate whose grid (and exact points) runs up-and-down (norht and south) from pole to pole
 ```
+
+## JSONL Example
+```json
+{
+    "location_id": 27, 
+    "city": "Tallahassee", 
+    "country": "United States", 
+    "latitude": 30.4124334, 
+    "longitude": -84.2831162
+}
+```

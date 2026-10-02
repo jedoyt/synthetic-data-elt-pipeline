@@ -35,3 +35,16 @@ nationality
 Type: TEXT, str
 Description: Customer's country of nationality
 ```
+## JSONL Example
+```json
+{
+    "customer_id": 42, 
+    "registration_ts": 
+    "2024-01-26T15:12:58Z", 
+    "username": "vbeams15", 
+    "email": "vlamacraft15@microsoft.com", 
+    "gender": "Male", 
+    "age": 28, 
+    "nationality": "Peru"
+}
+```

@@ -34,3 +34,15 @@ url
 Type: TEXT, str
 Description: Product link/URL address of the product
 ```
+
+## JSONL Example
+```json
+{
+    "product_id": 64, 
+    "category": "Food - Snacks", 
+    "sub-category": "Savory Snacks", 
+    "product_name": "Spicy Garlic Edamame", 
+    "description": "Steamed edamame tossed in a spicy garlic sauce, great for snacking.", 
+    "price": 3.99, "url": "https://pseudo-eshop.com/food---snacks/spicy-garlic-edamame"
+}
+```
