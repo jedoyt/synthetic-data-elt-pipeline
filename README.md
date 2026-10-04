@@ -513,11 +513,12 @@ Gold Tables:
 - fact_session_events
 
 Warehouse Statistics:
+(Upon first initialization of API)
 - dim_customers: 1000 rows
 - dim_products: 1000 rows
 - dim_locations: 1000 rows
 - dim_sessions: 100 rows
-- fact_session_events: 605 rows
+- fact_session_events: Around 500+ rows (Events are randomly generated and are nested inside session generation)
 
 Key Concepts:
 - Data warehousing
