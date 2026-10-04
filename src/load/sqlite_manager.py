@@ -55,6 +55,43 @@ class SQLiteManager:
             "message": f"Table {table_name} dropped from database!"
         }
 
+    def execute_and_tabulate(self, query, params=None):
+        """
+        Executes a SQL query and prints out a neatly formatted table.
+        """
+        if params is None:
+            params = ()
+            
+        # 1. Execute the query
+        self.cursor.execute(query, params)
+        
+        # 2. Extract column headers from cursor description
+        if not self.cursor.description:
+            print("Query executed successfully (No results to display).")
+            return
+            
+        headers = [desc[0] for desc in self.cursor.description]
+        rows = self.cursor.fetchall()
+        
+        # 3. Dynamically calculate the maximum width for each column
+        col_widths = [len(str(h)) for h in headers]
+        for row in rows:
+            for i, val in enumerate(row):
+                col_widths[i] = max(col_widths[i], len(str(val if val is not None else "NULL")))
+                
+        # 4. Generate format strings for clean grid alignments
+        format_template = " | ".join(f"{{:<{w}}}" for w in col_widths)
+        separator = "-+-".join("-" * w for w in col_widths)
+        
+        # 5. Print the table
+        print()
+        print(format_template.format(*headers))
+        print(separator)
+        for row in rows:
+            # Convert None to readable 'NULL' strings
+            stringified_row = [str(val) if val is not None else "NULL" for val in row]
+            print(format_template.format(*stringified_row))    
+
     def close(self):
         # Close DB
         self.connection.close()
@@ -63,18 +100,14 @@ class SQLiteManager:
 
 # Test SQLiteManager
 if __name__ == "__main__":
-    from pprint import pprint
     manager = SQLiteManager()
 
-    # Path to schema.sql
-    SCRIPT_PATH = Path(__file__).resolve().parents[2] / "sql/test_queries.sql"
-
-    # Execute SQL
-    sql = "SELECT * FROM fact_session_events LIMIT 5;"
-
-    output_rows = manager.cursor.execute(sql).fetchall()
-    for row in output_rows:
-        print(row)
-
+    # Execute and Tabulate SQL
+    sql = """
+        SELECT event_id, event_sequence AS seq, event_type, session_id
+        FROM fact_session_events
+        LIMIT 15;
+        """
+    manager.execute_and_tabulate(sql)
 
     manager.close()
