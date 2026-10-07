@@ -45,7 +45,7 @@ Database connection closed!
 
 #### Business Interpretation
 
-18 completed purchases occurred
+13 completed purchases occurred within the analyzed dataset.
 
 within the analyzed dataset.
 
@@ -77,6 +77,7 @@ Count total sessions-- 100 sessions.
 Count session containing at least one `"purchase"`.
 
 ##### Formula: (`purchase_sessions` / `total_sessions`) * 100
+13 purchasing sessions ÷ 100 total sessions × 100 = 13%
 
 Example Output:
 ```shell
@@ -91,6 +92,12 @@ Database connection closed!
 ```
 #### Business Interpretation
 13% of all sessions ended with a successful purchase.
+
+##### Business Use Cases
+- Measure checkout effectiveness
+- Evaluate marketing campaigns
+- Track user behavior trends
+- Monitor platform performance
 
 ### KPI 3: Cart Abandonment Rate
 **How many users added items to the cart but never purchased?**
@@ -147,11 +154,11 @@ Database connection closed!
 #### Business Interpretation
 37.5% of sessions that interacted with the cart never completed a purchase.
 
-A high value here indicates the following:
-* Checkout friction
-* Poor pricing
-* User hesitation
-* Payment issues
+##### Business Use Cases
+- Identify checkout friction
+- Evaluate pricing strategy
+- Measure shopping intent
+- Monitor conversion funnel health
 
 ### KPI 4: Average Events Per Session
 **How engaged is the average customer session?**
@@ -172,7 +179,7 @@ FROM fact_session_events;
 Suppose we have 605 event from these 100 sessions, we'll just divide 605 by 100 to get the average events per session.
 
 #### Business Interpretation
-The average sessionm, therefore, contains 6.05 interactions.
+The average session, therefore, contains 6.05 interactions.
 
 Example Output:
 ```shell
@@ -187,7 +194,7 @@ Database connection closed!
 ```
 
 ### KPI 5: Sessions By Platform
-**Which platform is most used?**
+**Which OS platform is most used?**
 
 Full Query:
 ```sql
@@ -218,6 +225,16 @@ macos    | 11
 Database connection closed!
 ```
 
+#### Business Interpretation
+This metric helps identify which operating systems
+or application platforms are generating the most traffic.
+
+##### Potential uses:
+- Prioritize platform support
+- Evaluate platform adoption
+- Guide testing strategies
+- Inform product roadmap decisions
+
 ### KPI 6: Sessions By Country
 **Which countries generate the most activity?**
 
@@ -234,7 +251,18 @@ GROUP BY dl.country
 ORDER BY total_sessions DESC;
 ```
 #### SQL Logic
-A session doesn't directly contain country information so we need to `JOIN` `dim_sessions` `ON` `dim_locations`.
+Sessions do not directly store country information.
+
+To obtain country-level metrics, we use the
+location_id foreign key to join:
+
+dim_sessions
+    ↓
+dim_locations
+
+The join enriches each session with its country,
+allowing aggregation by country.
+
 
 Example Output:
 ```shell
@@ -317,7 +345,7 @@ These users represent:
 * Frequent shoppers
 * Highly engaged customers
 
-Often useful for:
+##### Often useful for:
 * Loyalty campaigns
 * Customer segmentation
 * Retention analysis
